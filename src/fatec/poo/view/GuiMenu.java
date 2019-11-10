@@ -64,13 +64,28 @@ public class GuiMenu extends javax.swing.JFrame {
         jMenu1.add(jMenuItemTurma);
 
         jMenuItemInstrutor.setText("Instrutor");
+        jMenuItemInstrutor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemInstrutorActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItemInstrutor);
 
         jMenuItemAluno.setText("Aluno");
+        jMenuItemAluno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemAlunoActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItemAluno);
         jMenu1.add(jSeparator1);
 
         jMenuItemSair.setText("Sair");
+        jMenuItemSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemSairActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItemSair);
 
         jMenuBar1.add(jMenu1);
@@ -78,9 +93,19 @@ public class GuiMenu extends javax.swing.JFrame {
         jMenu2.setText("Operações");
 
         jMenuItemAlocarInstrutor.setText("Alocar Instrutor");
+        jMenuItemAlocarInstrutor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemAlocarInstrutorActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItemAlocarInstrutor);
 
         jMenuItemEfetuarMatricula.setText("Efetuar Matrícula");
+        jMenuItemEfetuarMatricula.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemEfetuarMatriculaActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItemEfetuarMatricula);
 
         jMenuBar1.add(jMenu2);
@@ -102,12 +127,36 @@ public class GuiMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItemCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCursoActionPerformed
-        
+        GuiCurso guiCurso = new GuiCurso();
+        guiCurso.setVisible(true);
     }//GEN-LAST:event_jMenuItemCursoActionPerformed
 
     private void jMenuItemTurmaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemTurmaActionPerformed
-        
+        GuiTurma guiTurma = new GuiTurma();
+        guiTurma.setVisible(true);
     }//GEN-LAST:event_jMenuItemTurmaActionPerformed
+
+    private void jMenuItemInstrutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemInstrutorActionPerformed
+        GuiInstrutor guiInstrutor = new GuiInstrutor();
+        guiInstrutor.setVisible(true);
+    }//GEN-LAST:event_jMenuItemInstrutorActionPerformed
+
+    private void jMenuItemAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAlunoActionPerformed
+        GuiAluno guiAluno = new GuiAluno();
+        guiAluno.setVisible(true);
+    }//GEN-LAST:event_jMenuItemAlunoActionPerformed
+
+    private void jMenuItemSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSairActionPerformed
+        dispose();
+    }//GEN-LAST:event_jMenuItemSairActionPerformed
+
+    private void jMenuItemAlocarInstrutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAlocarInstrutorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItemAlocarInstrutorActionPerformed
+
+    private void jMenuItemEfetuarMatriculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemEfetuarMatriculaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItemEfetuarMatriculaActionPerformed
 
     /**
      * @param args the command line arguments

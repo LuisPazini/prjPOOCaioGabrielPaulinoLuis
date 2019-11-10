@@ -55,8 +55,6 @@ public class GuiCurso extends javax.swing.JFrame {
 
         jLabel11.setText("Data vigência");
 
-        txtSiglaCurso.setEnabled(false);
-
         btnConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/pesq.png"))); // NOI18N
         btnConsultar.setText("Consultar");
 
