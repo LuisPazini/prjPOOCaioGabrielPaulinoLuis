@@ -7,7 +7,7 @@ package fatec.poo.model;
  * @author Luis
  * 
  */
-public abstract class Matricula {
+public class Matricula {
     
     private String data;
     private int qtdeFaltas;
@@ -48,7 +48,7 @@ public abstract class Matricula {
     /*Tipo de Matrícula:
      *  1- A Vista
      *  2- A Prazo
-    */
+    
     
     public void setTipoMatricula(int tipoMatricula){
         if(tipoMatricula == 1){
@@ -57,6 +57,6 @@ public abstract class Matricula {
             aPrazo = new APrazo(this.data);
         }
     }
-    
+    */
     //public abstract void emitirCarne();
 }
