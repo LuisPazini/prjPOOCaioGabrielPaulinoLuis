@@ -68,6 +68,7 @@ public class GuiInstrutor extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Cadastrar Instrutor");
 
         jLabel1.setText("CPF");
 

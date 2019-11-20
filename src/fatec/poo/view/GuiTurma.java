@@ -48,6 +48,7 @@ public class GuiTurma extends javax.swing.JFrame {
         txtDataInicio = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Cadastrar Turma");
 
         jLabel2.setText("Sigla Turma");
 

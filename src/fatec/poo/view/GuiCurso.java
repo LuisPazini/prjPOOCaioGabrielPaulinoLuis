@@ -5,8 +5,15 @@
  */
 package fatec.poo.view;
 
+import fatec.poo.control.Conexao;
+import fatec.poo.control.DaoCurso;
+import fatec.poo.model.Curso;
+
+import javax.swing.JOptionPane;
+
 /**
- *
+ * @author Caio
+ * @author Gabriel Paulino
  * @author Alberto
  */
 public class GuiCurso extends javax.swing.JFrame {
@@ -48,6 +55,15 @@ public class GuiCurso extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Cadastrar Curso");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jLabel2.setText("Nome curso");
 
@@ -61,6 +77,11 @@ public class GuiCurso extends javax.swing.JFrame {
         btnInserir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/add.png"))); // NOI18N
         btnInserir.setText("Inserir");
         btnInserir.setEnabled(false);
+        btnInserir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInserirActionPerformed(evt);
+            }
+        });
 
         btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Alterar.png"))); // NOI18N
         btnAlterar.setText("Alterar");
@@ -189,6 +210,30 @@ public class GuiCurso extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnSairActionPerformed
 
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        conexao = new Conexao("BD1913014", "BD1913014");
+        conexao.setDriver("oracle.jdbc.driver.OracleDriver");
+        conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
+        daoCurso = new DaoCurso(conexao.conectar());
+    }//GEN-LAST:event_formWindowOpened
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        conexao.fecharConexao();
+        dispose();
+    }//GEN-LAST:event_formWindowClosing
+
+    private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
+        curso = new Curso(txtSiglaCurso.getText(),txtNomeCurso.getText());
+        curso.setCargaHoraria(Integer.parseInt(txtCargaHoraria.getText()));
+        curso.setValor(Double.parseDouble(txtValorCurso.getText()));
+        curso.setDataVigencia(txtDataVigencia.getText());
+        curso.setValorHoraInstrutor(Double.parseDouble(txtHoraInstrutor.getText()));
+        curso.setPrograma(txtProgramaCurso.getText());
+        daoCurso.inserir(curso);
+        
+        /* Falta terminar aqui */
+    }//GEN-LAST:event_btnInserirActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -252,4 +297,7 @@ public class GuiCurso extends javax.swing.JFrame {
     private javax.swing.JTextField txtSiglaCurso;
     private javax.swing.JTextField txtValorCurso;
     // End of variables declaration//GEN-END:variables
+    private DaoCurso daoCurso = null;
+    private Curso curso = null;
+    private Conexao conexao = null;
 }
