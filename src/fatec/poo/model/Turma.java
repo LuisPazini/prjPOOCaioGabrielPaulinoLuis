@@ -71,6 +71,38 @@ public class Turma {
     public void setCurso (Curso curso) {
         this.curso = curso;
     }
-        
+    
     //public void emitirListaFrequencia();
+
+    public String getSiglaTurma() {
+        return siglaTurma;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public String getDataInicio() {
+        return dataInicio;
+    }
+
+    public String getDataTermino() {
+        return dataTermino;
+    }
+
+    public String getPeriodo() {
+        return periodo;
+    }
+
+    public int getQtdVagas() {
+        return qtdVagas;
+    }
+
+    public String getObservacoes() {
+        return observacoes;
+    }
+
+    public ArrayList<Matricula> getMatriculas() {
+        return matriculas;
+    }
 }

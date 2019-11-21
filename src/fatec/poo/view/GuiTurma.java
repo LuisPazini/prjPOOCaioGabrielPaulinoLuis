@@ -221,13 +221,12 @@ public class GuiTurma extends javax.swing.JFrame {
         conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
         daoTurma = new DaoTurma(conexao.conectar());
         
-        //ArrayList<String> listaSiglas = new ArrayList<String>();
-        //listaSiglas = daoCurso.listarSiglas();
+        ArrayList<String> listaSiglas;
+        listaSiglas = daoCurso.listarSiglas();
         
         for (String siglas : daoCurso.listarSiglas()) {
             cbxCurso.addItem(siglas);
         }
-
     }//GEN-LAST:event_formWindowOpened
 
     /**

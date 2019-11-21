@@ -7,7 +7,7 @@ package fatec.poo.view;
 
 /**
  *
- * @author Alberto
+ * @author Augusto
  */
 public class GuiInstrutor extends javax.swing.JFrame {
 

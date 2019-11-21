@@ -9,7 +9,7 @@ import fatec.poo.model.Aluno;
 
 /**
  *
- * @author GABRIEL
+ * @author Augusto
  */
 public class DaoAluno {
     

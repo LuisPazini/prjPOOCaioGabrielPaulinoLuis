@@ -7,7 +7,7 @@ package fatec.poo.view;
 
 /**
  *
- * @author Alberto
+ * @author Augusto
  */
 public class GuiMenu extends javax.swing.JFrame {
 

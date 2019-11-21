@@ -7,7 +7,7 @@ package fatec.poo.view;
 
 /**
  *
- * @author Alberto
+ * @author Augusto
  */
 public class GuiAluno extends javax.swing.JFrame {
 

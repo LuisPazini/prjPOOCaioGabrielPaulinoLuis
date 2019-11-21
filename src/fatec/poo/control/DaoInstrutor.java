@@ -9,7 +9,7 @@ import fatec.poo.model.Instrutor;
 
 /**
  *
- * @author GABRIEL
+ * @author Augusto
  */
 public class DaoInstrutor {
     
