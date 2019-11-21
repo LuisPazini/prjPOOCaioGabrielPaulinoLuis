@@ -5,9 +5,19 @@
  */
 package fatec.poo.view;
 
+import fatec.poo.control.Conexao;
+import fatec.poo.control.DaoTurma;
+import fatec.poo.control.DaoCurso;
+import fatec.poo.model.Curso;
+import fatec.poo.model.Turma;
+
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+
 /**
- *
- * @author Alberto
+ * @author Caio
+ * @author Gabriel Paulino
+ * @author Luis
  */
 public class GuiTurma extends javax.swing.JFrame {
 
@@ -49,6 +59,11 @@ public class GuiTurma extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Cadastrar Turma");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jLabel2.setText("Sigla Turma");
 
@@ -198,6 +213,23 @@ public class GuiTurma extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnSairActionPerformed
 
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+
+        conexao = new Conexao("BD1913014", "BD1913014");
+        conexao.setDriver("oracle.jdbc.driver.OracleDriver");
+        //conexao.setConnectionString("jdbc:oracle:thin:@localhost:1521:xe");
+        conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
+        daoTurma = new DaoTurma(conexao.conectar());
+        
+        //ArrayList<String> listaSiglas = new ArrayList<String>();
+        //listaSiglas = daoCurso.listarSiglas();
+        
+        for (String siglas : daoCurso.listarSiglas()) {
+            cbxCurso.addItem(siglas);
+        }
+
+    }//GEN-LAST:event_formWindowOpened
+
     /**
      * @param args the command line arguments
      */
@@ -257,4 +289,8 @@ public class GuiTurma extends javax.swing.JFrame {
     private javax.swing.JTextField txtQtdeVagas;
     private javax.swing.JTextField txtSiglaTurma;
     // End of variables declaration//GEN-END:variables
+    private DaoCurso daoCurso = null;
+    private DaoTurma daoTurma = null;
+    private Conexao conexao = null;
+    private Turma turma = null;
 }

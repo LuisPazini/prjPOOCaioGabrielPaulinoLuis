@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 
 import fatec.poo.model.Curso;
+import java.util.ArrayList;
 
 /**
  *
@@ -106,6 +107,66 @@ public class DaoCurso {
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
+    }
+/*
+    public ArrayList<Curso> listarSiglas() {
+        PreparedStatement ps = null;
+
+        try {
+            ps = conn.prepareStatement("SELECT sigla,"
+                    + " nome,"
+                    + " cargaHoraria,"
+                    + " valor,"
+                    + " dataVigencia,"
+                    + " valorHoraInstrutor,"
+                    + " programa"
+                    + " FROM tbCurso");
+            
+            ResultSet rs = ps.executeQuery();
+
+            ArrayList<Curso> siglas = new ArrayList<Curso>();
+
+            while (rs.next()) {
+                
+                Curso c = new Curso(rs.getString("sigla"), rs.getString("nome"));
+                
+                c.setCargaHoraria(rs.getInt("cargaHoraria"));
+                c.setValor(rs.getDouble("valor"));
+                c.setDataVigencia(rs.getString("dataVigencia"));
+                c.setValorHoraInstrutor(rs.getDouble("valorHoraInstrutor"));
+                c.setPrograma(rs.getString("programa"));
+                
+                siglas.add(c);
+            }
+            return siglas;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+
+    }
+    */
+        public ArrayList<String> listarSiglas() {
+        PreparedStatement ps = null;
+
+        try {
+            ps = conn.prepareStatement("SELECT sigla"
+                    + " FROM tbCurso");
+            
+            ResultSet rs = ps.executeQuery();
+
+            ArrayList<String> siglas = new ArrayList<String>();
+
+            while (rs.next()) {
+
+                siglas.add(rs.getString("sigla"));
+            }
+            return siglas;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+
     }
 
 }

@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
 /**
  * @author Caio
  * @author Gabriel Paulino
- * @author Alberto
+ * @author Luis
  */
 public class GuiCurso extends javax.swing.JFrame {
 
