@@ -1,7 +1,7 @@
 create table tbCurso (
-	sigla varchar2(3) not null,
-	nome varchar2(50) not null,
-	cargaHoraria number (2,0) not null, 
+	sigla varchar2(5) not null,
+	nome varchar2(100) not null,
+	cargaHoraria number (5,0) not null, 
 	valor number (8,2) not null,
 	dataVigencia varchar2(10) not null,
 	valorHoraInstrutor number (5,2) not null,

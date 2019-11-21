@@ -73,6 +73,11 @@ public class GuiCurso extends javax.swing.JFrame {
 
         btnConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/pesq.png"))); // NOI18N
         btnConsultar.setText("Consultar");
+        btnConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarActionPerformed(evt);
+            }
+        });
 
         btnInserir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/add.png"))); // NOI18N
         btnInserir.setText("Inserir");
@@ -86,10 +91,20 @@ public class GuiCurso extends javax.swing.JFrame {
         btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Alterar.png"))); // NOI18N
         btnAlterar.setText("Alterar");
         btnAlterar.setEnabled(false);
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Eraser.png"))); // NOI18N
         btnExcluir.setText("Excluir");
         btnExcluir.setEnabled(false);
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/exit.png"))); // NOI18N
         btnSair.setText("Sair");
@@ -213,6 +228,7 @@ public class GuiCurso extends javax.swing.JFrame {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         conexao = new Conexao("BD1913014", "BD1913014");
         conexao.setDriver("oracle.jdbc.driver.OracleDriver");
+        //conexao.setConnectionString("jdbc:oracle:thin:@localhost:1521:xe");
         conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
         daoCurso = new DaoCurso(conexao.conectar());
     }//GEN-LAST:event_formWindowOpened
@@ -223,16 +239,143 @@ public class GuiCurso extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
-        curso = new Curso(txtSiglaCurso.getText(),txtNomeCurso.getText());
+        curso = new Curso(txtSiglaCurso.getText(), txtNomeCurso.getText());
         curso.setCargaHoraria(Integer.parseInt(txtCargaHoraria.getText()));
         curso.setValor(Double.parseDouble(txtValorCurso.getText()));
         curso.setDataVigencia(txtDataVigencia.getText());
         curso.setValorHoraInstrutor(Double.parseDouble(txtHoraInstrutor.getText()));
         curso.setPrograma(txtProgramaCurso.getText());
         daoCurso.inserir(curso);
-        
-        /* Falta terminar aqui */
+
+        txtSiglaCurso.setText("");
+        txtNomeCurso.setText("");
+        txtCargaHoraria.setText("");
+        txtValorCurso.setText("");
+        txtDataVigencia.setText("");
+        txtHoraInstrutor.setText("");
+        txtProgramaCurso.setText("");
+
+        txtSiglaCurso.setEnabled(true);
+        txtNomeCurso.setEnabled(false);
+        txtCargaHoraria.setEnabled(false);
+        txtValorCurso.setEnabled(false);
+        txtDataVigencia.setEnabled(false);
+        txtHoraInstrutor.setEnabled(false);
+        txtProgramaCurso.setEnabled(false);
+
+        txtSiglaCurso.requestFocus();
+
+        btnConsultar.setEnabled(true);
+        btnInserir.setEnabled(false);
     }//GEN-LAST:event_btnInserirActionPerformed
+
+    private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+        curso = null;
+        curso = daoCurso.consultar(txtSiglaCurso.getText());
+
+        if (curso == null) {
+            txtSiglaCurso.setEnabled(false);
+            txtNomeCurso.setEnabled(true);
+            txtCargaHoraria.setEnabled(true);
+            txtValorCurso.setEnabled(true);
+            txtDataVigencia.setEnabled(true);
+            txtHoraInstrutor.setEnabled(true);
+            txtProgramaCurso.setEnabled(true);
+
+            txtNomeCurso.requestFocus();
+
+            btnConsultar.setEnabled(false);
+            btnInserir.setEnabled(true);
+            btnAlterar.setEnabled(false);
+            btnExcluir.setEnabled(false);
+
+        } else {
+            txtNomeCurso.setText(curso.getNome());
+            txtCargaHoraria.setText(Integer.toString(curso.getCargaHoraria()));
+            txtValorCurso.setText(Double.toString(curso.getValor()));
+            txtDataVigencia.setText(curso.getDataVigencia());
+            txtHoraInstrutor.setText(Double.toString(curso.getValorHoraInstrutor()));
+            txtProgramaCurso.setText(curso.getPrograma());
+
+            txtSiglaCurso.setEnabled(false);
+            txtNomeCurso.setEnabled(true);
+            txtCargaHoraria.setEnabled(true);
+            txtValorCurso.setEnabled(true);
+            txtDataVigencia.setEnabled(true);
+            txtHoraInstrutor.setEnabled(true);
+            txtProgramaCurso.setEnabled(true);
+
+            txtNomeCurso.requestFocus();
+
+            btnConsultar.setEnabled(false);
+            btnInserir.setEnabled(false);
+            btnAlterar.setEnabled(true);
+            btnExcluir.setEnabled(true);
+        }
+    }//GEN-LAST:event_btnConsultarActionPerformed
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        if (JOptionPane.showConfirmDialog(null, "Confirma Alteração?") == 0) {
+            curso.setCargaHoraria(Integer.parseInt(txtCargaHoraria.getText()));
+            curso.setValor(Double.parseDouble(txtValorCurso.getText()));
+            curso.setDataVigencia(txtDataVigencia.getText());
+            curso.setValorHoraInstrutor(Double.parseDouble(txtHoraInstrutor.getText()));
+            curso.setPrograma(txtProgramaCurso.getText());
+            daoCurso.alterar(curso);
+        }
+
+        txtSiglaCurso.setText("");
+        txtNomeCurso.setText("");
+        txtCargaHoraria.setText("");
+        txtValorCurso.setText("");
+        txtDataVigencia.setText("");
+        txtHoraInstrutor.setText("");
+        txtProgramaCurso.setText("");
+
+        txtSiglaCurso.setEnabled(true);
+        txtNomeCurso.setEnabled(false);
+        txtCargaHoraria.setEnabled(false);
+        txtValorCurso.setEnabled(false);
+        txtDataVigencia.setEnabled(false);
+        txtHoraInstrutor.setEnabled(false);
+        txtProgramaCurso.setEnabled(false);
+
+        txtSiglaCurso.requestFocus();
+
+        btnConsultar.setEnabled(true);
+        btnInserir.setEnabled(false);
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+    }//GEN-LAST:event_btnAlterarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        if (JOptionPane.showConfirmDialog(null, "Confirma Exclusão?") == 0) {
+            daoCurso.excluir(curso);
+
+            txtSiglaCurso.setText("");
+            txtNomeCurso.setText("");
+            txtCargaHoraria.setText("");
+            txtValorCurso.setText("");
+            txtDataVigencia.setText("");
+            txtHoraInstrutor.setText("");
+            txtProgramaCurso.setText("");
+
+            txtSiglaCurso.setEnabled(true);
+            txtNomeCurso.setEnabled(false);
+            txtCargaHoraria.setEnabled(false);
+            txtValorCurso.setEnabled(false);
+            txtDataVigencia.setEnabled(false);
+            txtHoraInstrutor.setEnabled(false);
+            txtProgramaCurso.setEnabled(false);
+
+            txtSiglaCurso.requestFocus();
+
+            btnConsultar.setEnabled(true);
+            btnInserir.setEnabled(false);
+            btnAlterar.setEnabled(false);
+            btnExcluir.setEnabled(false);
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
 
     /**
      * @param args the command line arguments
