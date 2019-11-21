@@ -89,4 +89,64 @@ public class Pessoa {
         this.email = email;
     }
 
+    public String getNome() {
+        return nome;
+    }
+
+    public String getDataNasc() {
+        return dataNasc;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public int getNumero() {
+        return numero;
+    }
+
+    public String getBairro() {
+        return bairro;
+    }
+
+    public String getCidade() {
+        return cidade;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public String getCelular() {
+        return celular;
+    }
+
+    public String getSexo() {
+        return sexo;
+    }
+
+    public String getEstadoCivil() {
+        return estadoCivil;
+    }
+
+    public String getRg() {
+        return rg;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
 }
