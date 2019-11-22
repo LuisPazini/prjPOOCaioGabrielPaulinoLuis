@@ -30,5 +30,13 @@ public class Instrutor extends Pessoa {
         turmas.add(t);
         t.setInstrutor(this);
     }
+
+    public String getFormacao() {
+        return formacao;
+    }
+
+    public String getAreaAtuacao() {
+        return areaAtuacao;
+    }
     
 }

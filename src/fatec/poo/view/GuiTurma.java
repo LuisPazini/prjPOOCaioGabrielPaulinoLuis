@@ -224,7 +224,7 @@ public class GuiTurma extends javax.swing.JFrame {
         ArrayList<String> listaSiglas;
         listaSiglas = daoCurso.listarSiglas();
         
-        for (String siglas : daoCurso.listarSiglas()) {
+        for (String siglas : listaSiglas) {
             cbxCurso.addItem(siglas);
         }
     }//GEN-LAST:event_formWindowOpened

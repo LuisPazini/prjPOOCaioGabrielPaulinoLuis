@@ -8,8 +8,9 @@ import java.sql.ResultSet;
 import fatec.poo.model.Turma;
 
 /**
- *
- * @author Augusto
+ * @author Caio
+ * @author Gabriel Paulino
+ * @author Luis
  */
 public class DaoTurma {
     
@@ -23,7 +24,14 @@ public class DaoTurma {
         PreparedStatement ps = null;
         
         try{
-            ps = conn.prepareStatement("INSERT INTO tbTurma" //(siglaturma, descricao, datainicio, datatermino, periodo, qtdvagas, observacoes, siglacurso)
+            ps = conn.prepareStatement("INSERT INTO tbTurma("
+                    + "siglaTurma,"
+                    + "descricao,"
+                    + "dataInicio,"
+                    + "dataTermino,"
+                    + "periodo,"
+                    + "qtdVagas,"
+                    + "observacoes)"
                     + "VALUES(?,?,?,?,?,?,?)");
             
             ps.setString(1, turma.getSiglaTurma());
@@ -33,7 +41,6 @@ public class DaoTurma {
             ps.setString(5, turma.getPeriodo());
             ps.setInt(6, turma.getQtdVagas());
             ps.setString(7, turma.getObservacoes());
-            ps.setString(8, turma.getSiglaTurma());
             
             ps.execute();
         }catch(SQLException ex){

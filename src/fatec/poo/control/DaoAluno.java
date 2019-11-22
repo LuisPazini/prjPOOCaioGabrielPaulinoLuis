@@ -6,7 +6,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 
 import fatec.poo.model.Aluno;
-import fatec.poo.model.Curso;
 
 /**
  * @author CAIO
@@ -27,7 +26,7 @@ public class DaoAluno {
         try {
             ps = conn.prepareStatement("INSERT INTO tbAluno("
                     + "nome,"
-                    + "DataNasc,"
+                    + "dataNasc,"
                     + "endereco,"
                     + "numero,"
                     + "bairro,"
@@ -37,15 +36,17 @@ public class DaoAluno {
                     + "telefone,"
                     + "celular,"
                     + "sexo,"
-                    + "estadocivil,"
+                    + "estadoCivil,"
                     + "rg,"
                     + "cpf,"
-                    + "email)"
-                    + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                    + "email,"
+                    + "escolaridade)"
+                    + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            
             ps.setString(1, aluno.getNome());
             ps.setString(2, aluno.getDataNasc());
             ps.setString(3, aluno.getEndereco());
-            ps.setString(4, Integer.toString(aluno.getNumero()));
+            ps.setInt(4, aluno.getNumero());
             ps.setString(5, aluno.getBairro());
             ps.setString(6, aluno.getCidade());
             ps.setString(7, aluno.getEstado());
@@ -57,6 +58,8 @@ public class DaoAluno {
             ps.setString(13, aluno.getRg());
             ps.setString(14, aluno.getCpf());
             ps.setString(15, aluno.getEmail());
+            ps.setString(16, aluno.getEscolaridade());
+            
             ps.execute();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
@@ -65,8 +68,8 @@ public class DaoAluno {
     public void alterar(Aluno aluno) {
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("UPDATE tbAluno set nome = ?,"
-                    + "DataNasc = ?,"
+            ps = conn.prepareStatement("UPDATE tbAluno SET nome = ?,"
+                    + "dataNasc = ?,"
                     + "endereco = ?,"
                     + "numero = ?,"
                     + "bairro = ?,"
@@ -76,15 +79,16 @@ public class DaoAluno {
                     + "telefone = ?,"
                     + "celular = ?,"
                     + "sexo = ?,"
-                    + "estadocivil = ?,"
+                    + "estadoCivil = ?,"
                     + "rg = ?,"
-                    + "cpf = ?,"
-                    + "email = ?");
+                    + "email = ?,"
+                    + "escolaridade = ?"
+                    + "WHERE cpf = ?");
 
             ps.setString(1, aluno.getNome());
             ps.setString(2, aluno.getDataNasc());
             ps.setString(3, aluno.getEndereco());
-            ps.setString(4, Integer.toString(aluno.getNumero()));
+            ps.setInt(4, aluno.getNumero());
             ps.setString(5, aluno.getBairro());
             ps.setString(6, aluno.getCidade());
             ps.setString(7, aluno.getEstado());
@@ -94,51 +98,52 @@ public class DaoAluno {
             ps.setString(11, aluno.getSexo());
             ps.setString(12, aluno.getEstadoCivil());
             ps.setString(13, aluno.getRg());
-            ps.setString(14, aluno.getCpf());
-            ps.setString(15, aluno.getEmail());
+            ps.setString(14, aluno.getEmail());
+            ps.setString(15, aluno.getEscolaridade());
+            ps.setString(16, aluno.getCpf());
 
             ps.execute();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
     }
-    public Aluno consultar(String CPF) {
-        Aluno c = null;
+    public Aluno consultar(String cpf) {
+        Aluno a = null;
 
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("SELECT * from tbAluno where "
+            ps = conn.prepareStatement("SELECT * FROM tbAluno WHERE "
                     + "cpf = ?");
 
-            ps.setString(1, CPF);
+            ps.setString(1, cpf);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next() == true) {
-                c = new Aluno(rs.getString("nome"), CPF);
-                c.setDataNasc(rs.getString("datanasc"));
-                c.setEndereco(rs.getString("endereco"));
-                c.setNumero(rs.getInt("numero"));                
-                c.setBairro(rs.getString("bairro"));
-                c.setCidade(rs.getString("cidade"));
-                c.setEstado(rs.getString("estado"));
-                c.setCEP(rs.getString("cep"));
-                c.setTelefone(rs.getString("telefone"));
-                c.setCelular(rs.getString("celular"));
-                c.setSexo(rs.getString("sexo"));
-                c.setEstadoCivil(rs.getString("estadocivil"));
-                c.setRG(rs.getString("rg"));
-                c.setCPF(rs.getString("cpf"));
-                c.setEmail(rs.getString("email"));
+                a = new Aluno(rs.getString("nome"), cpf);
+                a.setDataNasc(rs.getString("dataNasc"));
+                a.setEndereco(rs.getString("endereco"));
+                a.setNumero(rs.getInt("numero"));                
+                a.setBairro(rs.getString("bairro"));
+                a.setCidade(rs.getString("cidade"));
+                a.setEstado(rs.getString("estado"));
+                a.setCEP(rs.getString("cep"));
+                a.setTelefone(rs.getString("telefone"));
+                a.setCelular(rs.getString("celular"));
+                a.setSexo(rs.getString("sexo"));
+                a.setEstadoCivil(rs.getString("estadoCivil"));
+                a.setRG(rs.getString("rg"));
+                a.setEmail(rs.getString("email"));
+                a.setEscolaridade(rs.getString("escolaridade"));
             }
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
-        return (c);
+        return (a);
     }
     public void excluir(Aluno aluno) {
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("DELETE FROM tbAluno where cpf = ?");
+            ps = conn.prepareStatement("DELETE FROM tbAluno WHERE cpf = ?");
 
             ps.setString(1, aluno.getCpf());
 

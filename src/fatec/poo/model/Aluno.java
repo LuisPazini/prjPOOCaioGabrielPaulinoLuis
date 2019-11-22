@@ -26,4 +26,9 @@ public class Aluno extends Pessoa {
         matricula = m;
         m.setAluno(this);
     }
+
+    public String getEscolaridade() {
+        return escolaridade;
+    }
+     
 }
