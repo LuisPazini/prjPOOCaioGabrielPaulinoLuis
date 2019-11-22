@@ -40,7 +40,7 @@
                           <Component id="jLabel8" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Component id="txtValorCurso" pref="97" max="32767" attributes="0"/>
@@ -59,7 +59,7 @@
                               </Group>
                           </Group>
                           <Component id="txtSiglaCurso" alignment="0" min="-2" pref="63" max="-2" attributes="0"/>
-                          <Component id="txtNomeCurso" alignment="0" min="-2" pref="145" max="-2" attributes="0"/>
+                          <Component id="txtNomeCurso" alignment="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" attributes="0">

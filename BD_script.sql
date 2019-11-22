@@ -34,7 +34,7 @@ create table tbInstrutor (
 	sexo varchar2(15) not null,
 	estadoCivil varchar2(20) not null,
 	rg varchar2(15) not null,
-	cpf varchar2(15) not null,
+	cpf varchar2(14) not null,
 	email varchar2(30) not null,
 	formacao varchar2(100) not null,
 	areaAtuacao varchar2(100) not null 
@@ -56,7 +56,7 @@ create table tbAluno (
 	sexo varchar2(15) not null,
 	estadoCivil varchar2(20) not null,
 	rg varchar2(15) not null,
-	cpf varchar2(15) not null,
+	cpf varchar2(14) not null,
 	email varchar2(30) not null,
 	escolaridade varchar2(200) not null 
 );

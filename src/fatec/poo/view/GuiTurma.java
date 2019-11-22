@@ -12,6 +12,7 @@ import fatec.poo.model.Curso;
 import fatec.poo.model.Turma;
 
 import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
 /**
@@ -224,9 +225,11 @@ public class GuiTurma extends javax.swing.JFrame {
         ArrayList<String> listaSiglas;
         listaSiglas = daoCurso.listarSiglas();
         
+        DefaultComboBoxModel dml= new DefaultComboBoxModel();
         for (String siglas : listaSiglas) {
             cbxCurso.addItem(siglas);
         }
+        
     }//GEN-LAST:event_formWindowOpened
 
     /**

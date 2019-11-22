@@ -5,6 +5,10 @@
  */
 package fatec.poo.view;
 
+import fatec.poo.model.Instrutor;
+import fatec.poo.model.Pessoa;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Augusto
@@ -105,6 +109,11 @@ public class GuiInstrutor extends javax.swing.JFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        txtCPF.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtCPFFocusLost(evt);
+            }
+        });
 
         txtDataNascto.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
         txtDataNascto.setEnabled(false);
@@ -359,6 +368,25 @@ public class GuiInstrutor extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnSairActionPerformed
 
+    private void txtCPFFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCPFFocusLost
+
+        String cpf = txtCPF.getText();
+        System.out.println(cpf);
+        cpf = cpf.replace(".", "");
+        cpf = cpf.replace("-","");
+        
+        if (pessoa.validarCPF(cpf) == true){
+            //CPF ok
+            System.out.println(cpf);
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "CPF inválido","ERRO", JOptionPane.ERROR_MESSAGE);
+            txtCPF.setText("");
+            txtCPF.requestFocus();
+        }
+        
+    }//GEN-LAST:event_txtCPFFocusLost
+
     /**
      * @param args the command line arguments
      */
@@ -438,4 +466,6 @@ public class GuiInstrutor extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField txtRG;
     private javax.swing.JFormattedTextField txtTelRes;
     // End of variables declaration//GEN-END:variables
+    private Pessoa pessoa = null;
+    private Instrutor instrutor = null;
 }
