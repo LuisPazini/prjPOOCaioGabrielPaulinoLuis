@@ -152,6 +152,9 @@ public class Pessoa {
     }
     
     public static boolean validarCPF(String cpf){
+        
+        cpf = cpf.replace(".", "");
+        cpf = cpf.replace("-","");
        
         if (cpf.equals("00000000000") ||
             cpf.equals("11111111111") ||

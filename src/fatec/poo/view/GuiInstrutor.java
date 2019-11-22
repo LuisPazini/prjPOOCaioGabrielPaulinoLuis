@@ -5,13 +5,17 @@
  */
 package fatec.poo.view;
 
+import fatec.poo.control.Conexao;
+import fatec.poo.control.DaoInstrutor;
 import fatec.poo.model.Instrutor;
 import fatec.poo.model.Pessoa;
+
 import javax.swing.JOptionPane;
 
 /**
- *
- * @author Augusto
+ * @author Caio
+ * @author Gabriel Paulino
+ * @author Luis
  */
 public class GuiInstrutor extends javax.swing.JFrame {
 
@@ -73,6 +77,14 @@ public class GuiInstrutor extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Cadastrar Instrutor");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jLabel1.setText("CPF");
 
@@ -372,8 +384,6 @@ public class GuiInstrutor extends javax.swing.JFrame {
 
         String cpf = txtCPF.getText();
         System.out.println(cpf);
-        cpf = cpf.replace(".", "");
-        cpf = cpf.replace("-","");
         
         if (pessoa.validarCPF(cpf) == true){
             //CPF ok
@@ -386,6 +396,19 @@ public class GuiInstrutor extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_txtCPFFocusLost
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        conexao = new Conexao("BD1913014", "BD1913014");
+        conexao.setDriver("oracle.jdbc.driver.OracleDriver");
+        //conexao.setConnectionString("jdbc:oracle:thin:@localhost:1521:xe");
+        conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
+        daoInstrutor = new DaoInstrutor(conexao.conectar());
+    }//GEN-LAST:event_formWindowOpened
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        conexao.fecharConexao();
+        dispose();
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
@@ -466,6 +489,8 @@ public class GuiInstrutor extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField txtRG;
     private javax.swing.JFormattedTextField txtTelRes;
     // End of variables declaration//GEN-END:variables
-    private Pessoa pessoa = null;
+    private DaoInstrutor daoInstrutor = null;
     private Instrutor instrutor = null;
+    private Conexao conexao = null;
+    private Pessoa pessoa = null;
 }

@@ -5,9 +5,17 @@
  */
 package fatec.poo.view;
 
+import fatec.poo.control.Conexao;
+import fatec.poo.control.DaoAluno;
+import fatec.poo.model.Aluno;
+import fatec.poo.model.Pessoa;
+
+import javax.swing.JOptionPane;
+
 /**
- *
- * @author Augusto
+ * @author Caio
+ * @author Gabriel Paulino
+ * @author Luis
  */
 public class GuiAluno extends javax.swing.JFrame {
 
@@ -67,6 +75,14 @@ public class GuiAluno extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Cadastrar Aluno");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jLabel1.setText("CPF");
 
@@ -105,6 +121,11 @@ public class GuiAluno extends javax.swing.JFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        txtCPF.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtCPFFocusLost(evt);
+            }
+        });
 
         txtDataNascto.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
         txtDataNascto.setEnabled(false);
@@ -175,6 +196,11 @@ public class GuiAluno extends javax.swing.JFrame {
         btnInserir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/add.png"))); // NOI18N
         btnInserir.setText("Inserir");
         btnInserir.setEnabled(false);
+        btnInserir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInserirActionPerformed(evt);
+            }
+        });
 
         btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Alterar.png"))); // NOI18N
         btnAlterar.setText("Alterar");
@@ -349,6 +375,92 @@ public class GuiAluno extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnSairActionPerformed
 
+    private void txtCPFFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCPFFocusLost
+        String cpf = txtCPF.getText();
+
+        if (pessoa.validarCPF(cpf) == true) {
+            //CPF ok
+            System.out.println(cpf);
+
+        } else {
+            JOptionPane.showMessageDialog(null, "CPF inválido", "ERRO", JOptionPane.ERROR_MESSAGE);
+            txtCPF.setText("");
+            txtCPF.requestFocus();
+        }
+    }//GEN-LAST:event_txtCPFFocusLost
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        conexao = new Conexao("BD1913014", "BD1913014");
+        conexao.setDriver("oracle.jdbc.driver.OracleDriver");
+        //conexao.setConnectionString("jdbc:oracle:thin:@localhost:1521:xe");
+        conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
+        daoAluno = new DaoAluno(conexao.conectar());
+    }//GEN-LAST:event_formWindowOpened
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        conexao.fecharConexao();
+        dispose();
+    }//GEN-LAST:event_formWindowClosing
+
+    private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
+        aluno = new Aluno(txtNome.getText(), txtCPF.getText());
+        aluno.setDataNasc(txtDataNascto.getText());
+        aluno.setEndereco(txtEndereco.getText());
+        aluno.setNumero(Integer.parseInt(txtNumero.getText()));
+        aluno.setBairro(txtBairro.getText());
+        aluno.setCidade(txtCidade.getText());
+        //aluno.setEstado(cbxEstado.getText());
+        aluno.setCEP(txtCEP.getText());
+        aluno.setTelefone(txtTelRes.getText());
+        aluno.setCelular(txtCelular.getText());
+        //aluno.setSexo(cbxSexo.getText());
+        //aluno.setEstadoCivil(cbxEstadoCivil.getText());
+        aluno.setRG(txtRG.getText());
+        aluno.setEmail(txtEmail.getText());
+        //aluno.setEscolaridade(cbxEscolaridade.getText());
+
+        daoAluno.inserir(aluno);
+
+        txtNome.setText("");
+        txtDataNascto.setText("");
+        txtEndereco.setText("");
+        txtNumero.setText("");
+        txtBairro.setText("");
+        txtCidade.setText("");
+        //cbxEstado.setText("");
+        txtCEP.setText("");
+        txtTelRes.setText("");
+        txtCelular.setText("");
+        //cbxSexo.setText("");
+        //cbxEstadoCivil.setText("");
+        txtRG.setText("");
+        txtCPF.setText("");
+        txtEmail.setText("");
+        //cbxEscolaridade.setText("");
+
+        txtCPF.setEnabled(true);
+        txtNome.setEnabled(false);
+        txtDataNascto.setEnabled(false);
+        txtEndereco.setEnabled(false);
+        txtNumero.setEnabled(false);
+        txtBairro.setEnabled(false);
+        txtCidade.setEnabled(false);
+        cbxEstado.setEnabled(false);
+        txtCEP.setEnabled(false);
+        txtTelRes.setEnabled(false);
+        txtCelular.setEnabled(false);
+        cbxSexo.setEnabled(false);
+        cbxEstadoCivil.setEnabled(false);
+        txtRG.setEnabled(false);
+        txtEmail.setEnabled(false);
+        cbxEscolaridade.setEnabled(false);
+
+        txtCPF.requestFocus();
+
+        btnConsultar.setEnabled(true);
+        btnInserir.setEnabled(false);
+    }//GEN-LAST:event_btnInserirActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -424,4 +536,8 @@ public class GuiAluno extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField txtRG;
     private javax.swing.JFormattedTextField txtTelRes;
     // End of variables declaration//GEN-END:variables
+    private DaoAluno daoAluno = null;
+    private Aluno aluno = null;
+    private Conexao conexao = null;
+    private Pessoa pessoa = null;
 }

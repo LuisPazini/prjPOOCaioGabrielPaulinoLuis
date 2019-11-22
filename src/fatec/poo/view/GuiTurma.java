@@ -8,11 +8,9 @@ package fatec.poo.view;
 import fatec.poo.control.Conexao;
 import fatec.poo.control.DaoTurma;
 import fatec.poo.control.DaoCurso;
-import fatec.poo.model.Curso;
 import fatec.poo.model.Turma;
 
 import java.util.ArrayList;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
 /**
@@ -61,6 +59,9 @@ public class GuiTurma extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Cadastrar Turma");
         addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
             }
@@ -225,12 +226,16 @@ public class GuiTurma extends javax.swing.JFrame {
         ArrayList<String> listaSiglas;
         listaSiglas = daoCurso.listarSiglas();
         
-        DefaultComboBoxModel dml= new DefaultComboBoxModel();
         for (String siglas : listaSiglas) {
             cbxCurso.addItem(siglas);
         }
         
     }//GEN-LAST:event_formWindowOpened
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        conexao.fecharConexao();
+        dispose();
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
@@ -291,8 +296,8 @@ public class GuiTurma extends javax.swing.JFrame {
     private javax.swing.JTextField txtQtdeVagas;
     private javax.swing.JTextField txtSiglaTurma;
     // End of variables declaration//GEN-END:variables
-    private DaoCurso daoCurso = null;
     private DaoTurma daoTurma = null;
-    private Conexao conexao = null;
+    private DaoCurso daoCurso = null;
     private Turma turma = null;
+    private Conexao conexao = null; 
 }
