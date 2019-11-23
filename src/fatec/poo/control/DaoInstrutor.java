@@ -70,7 +70,8 @@ public class DaoInstrutor {
     public void alterar(Instrutor instrutor) {
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("UPDATE tbInstrutor SET nome = ?,"
+            ps = conn.prepareStatement("UPDATE tbInstrutor SET "
+                    + "nome = ?,"
                     + "dataNasc = ?,"
                     + "endereco = ?,"
                     + "numero = ?,"

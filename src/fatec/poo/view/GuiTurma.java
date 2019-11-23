@@ -212,6 +212,7 @@ public class GuiTurma extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
+        conexao.fecharConexao();
         dispose();
     }//GEN-LAST:event_btnSairActionPerformed
 
@@ -219,8 +220,8 @@ public class GuiTurma extends javax.swing.JFrame {
 
         conexao = new Conexao("BD1913014", "BD1913014");
         conexao.setDriver("oracle.jdbc.driver.OracleDriver");
-        //conexao.setConnectionString("jdbc:oracle:thin:@localhost:1521:xe");
-        conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
+        conexao.setConnectionString("jdbc:oracle:thin:@localhost:1521:xe");
+        //conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
         daoTurma = new DaoTurma(conexao.conectar());
         
         ArrayList<String> listaSiglas;

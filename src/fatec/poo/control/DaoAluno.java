@@ -68,7 +68,8 @@ public class DaoAluno {
     public void alterar(Aluno aluno) {
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("UPDATE tbAluno SET nome = ?,"
+            ps = conn.prepareStatement("UPDATE tbAluno SET "
+                    + "nome = ?,"
                     + "dataNasc = ?,"
                     + "endereco = ?,"
                     + "numero = ?,"
