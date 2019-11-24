@@ -403,7 +403,17 @@ public class GuiAluno extends javax.swing.JFrame {
         aluno = new Aluno(txtNome.getText(), txtCPF.getText());
         aluno.setDataNasc(txtDataNascto.getText());
         aluno.setEndereco(txtEndereco.getText());
-        aluno.setNumero(Integer.parseInt(txtNumero.getText()));
+
+        /*Tratamento de erros de Conversao de String vazia*/
+        try {
+            if (txtNumero.getText() != null) {
+                aluno.setNumero(Integer.parseInt(txtNumero.getText()));
+            }
+        } catch (NumberFormatException e) {
+            aluno.setNumero(0);
+        }
+
+        //aluno.setNumero(Integer.parseInt(txtNumero.getText()));
         aluno.setBairro(txtBairro.getText());
         aluno.setCidade(txtCidade.getText());
         aluno.setEstado((String) cbxEstado.getSelectedItem());
@@ -547,7 +557,18 @@ public class GuiAluno extends javax.swing.JFrame {
             aluno.setNome(txtNome.getText());
             aluno.setDataNasc(txtDataNascto.getText());
             aluno.setEndereco(txtEndereco.getText());
-            aluno.setNumero(Integer.parseInt(txtNumero.getText()));
+
+            /*Tratamento de erros de Conversao de String vazia*/
+            
+            try {
+                if (txtNumero.getText() != null) {
+                    aluno.setNumero(Integer.parseInt(txtNumero.getText()));
+                }
+            } catch (NumberFormatException e) {
+                aluno.setNumero(0);
+            }
+
+            //aluno.setNumero(Integer.parseInt(txtNumero.getText()));
             aluno.setBairro(txtBairro.getText());
             aluno.setCidade(txtCidade.getText());
             aluno.setEstado((String) cbxEstado.getSelectedItem());

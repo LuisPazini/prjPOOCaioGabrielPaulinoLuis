@@ -32,6 +32,7 @@ public class DaoCurso {
                     + "valorHoraInstrutor,"
                     + "programa)"
                     + "VALUES(?,?,?,?,?,?,?)");
+            
             ps.setString(1, curso.getSigla());
             ps.setString(2, curso.getNome());
             ps.setInt(3, curso.getCargaHoraria());
@@ -49,21 +50,20 @@ public class DaoCurso {
     public void alterar(Curso curso) {
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("UPDATE tbCurso set nome = ?,"
+            ps = conn.prepareStatement("UPDATE tbCurso SET "
                     + "cargaHoraria = ?,"
                     + "valor = ?,"
                     + "dataVigencia = ?,"
                     + "valorHoraInstrutor = ?,"
                     + "programa = ?"
-                    + "where sigla = ?");
+                    + "WHERE sigla = ?");
 
-            ps.setString(1, curso.getNome());
-            ps.setInt(2, curso.getCargaHoraria());
-            ps.setDouble(3, curso.getValor());
-            ps.setString(4, curso.getDataVigencia());
-            ps.setDouble(5, curso.getValorHoraInstrutor());
-            ps.setString(6, curso.getPrograma());
-            ps.setString(7, curso.getSigla());
+            ps.setInt(1, curso.getCargaHoraria());
+            ps.setDouble(2, curso.getValor());
+            ps.setString(3, curso.getDataVigencia());
+            ps.setDouble(4, curso.getValorHoraInstrutor());
+            ps.setString(5, curso.getPrograma());
+            ps.setString(6, curso.getSigla());
 
             ps.execute();
         } catch (SQLException ex) {

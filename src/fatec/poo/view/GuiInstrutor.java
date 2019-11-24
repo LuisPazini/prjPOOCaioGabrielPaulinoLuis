@@ -413,7 +413,18 @@ public class GuiInstrutor extends javax.swing.JFrame {
         instrutor = new Instrutor(txtNome.getText(), txtCPF.getText());
         instrutor.setDataNasc(txtDataNascto.getText());
         instrutor.setEndereco(txtEndereco.getText());
-        instrutor.setNumero(Integer.parseInt(txtNumero.getText()));
+
+        /*Tratamento de erros de Conversao de String vazia*/
+        
+        try {
+            if (txtNumero.getText() != null) {
+                instrutor.setNumero(Integer.parseInt(txtNumero.getText()));
+            }
+        } catch (NumberFormatException e) {
+            instrutor.setNumero(0);
+        }
+
+        //instrutor.setNumero(Integer.parseInt(txtNumero.getText()));
         instrutor.setBairro(txtBairro.getText());
         instrutor.setCidade(txtCidade.getText());
         instrutor.setEstado((String) cbxEstado.getSelectedItem());
@@ -562,7 +573,18 @@ public class GuiInstrutor extends javax.swing.JFrame {
             instrutor.setNome(txtNome.getText());
             instrutor.setDataNasc(txtDataNascto.getText());
             instrutor.setEndereco(txtEndereco.getText());
-            instrutor.setNumero(Integer.parseInt(txtNumero.getText()));
+
+            /*Tratamento de erros de Conversao de String vazia*/
+            
+            try {
+                if (txtNumero.getText() != null) {
+                    instrutor.setNumero(Integer.parseInt(txtNumero.getText()));
+                }
+            } catch (NumberFormatException e) {
+                instrutor.setNumero(0);
+            }
+
+            //instrutor.setNumero(Integer.parseInt(txtNumero.getText()));
             instrutor.setBairro(txtBairro.getText());
             instrutor.setCidade(txtCidade.getText());
             instrutor.setEstado((String) cbxEstado.getSelectedItem());

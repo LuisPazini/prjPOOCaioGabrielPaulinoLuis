@@ -122,7 +122,7 @@ public class GuiCurso extends javax.swing.JFrame {
 
         jLabel5.setText("Valor curso");
 
-        txtDataVigencia.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
+        txtDataVigencia.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.MEDIUM))));
         txtDataVigencia.setEnabled(false);
 
         txtNomeCurso.setEnabled(false);
@@ -241,10 +241,36 @@ public class GuiCurso extends javax.swing.JFrame {
 
     private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
         curso = new Curso(txtSiglaCurso.getText(), txtNomeCurso.getText());
-        curso.setCargaHoraria(Integer.parseInt(txtCargaHoraria.getText()));
-        curso.setValor(Double.parseDouble(txtValorCurso.getText()));
+
+        /*Tratamento de erros de Conversao de String vazia*/
+        try {
+            if (txtCargaHoraria.getText() != null) {
+                curso.setCargaHoraria(Integer.parseInt(txtCargaHoraria.getText()));
+            }
+        } catch (NumberFormatException e) {
+            curso.setCargaHoraria(0);
+        }
+
+        try {
+            if (txtValorCurso.getText() != null) {
+                curso.setValor(Double.parseDouble(txtValorCurso.getText()));
+            }
+        } catch (NumberFormatException e) {
+            curso.setValor(0);
+        }
+
+        try {
+            if (txtHoraInstrutor.getText() != null) {
+                curso.setValorHoraInstrutor(Double.parseDouble(txtHoraInstrutor.getText()));
+            }
+        } catch (NumberFormatException e) {
+            curso.setValorHoraInstrutor(0);
+        }
+
+        //curso.setCargaHoraria(Integer.parseInt(txtCargaHoraria.getText()));
+        //curso.setValor(Double.parseDouble(txtValorCurso.getText()));
         curso.setDataVigencia(txtDataVigencia.getText());
-        curso.setValorHoraInstrutor(Double.parseDouble(txtHoraInstrutor.getText()));
+        //curso.setValorHoraInstrutor(Double.parseDouble(txtHoraInstrutor.getText()));
         curso.setPrograma(txtProgramaCurso.getText());
         daoCurso.inserir(curso);
 
@@ -317,10 +343,36 @@ public class GuiCurso extends javax.swing.JFrame {
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
         if (JOptionPane.showConfirmDialog(null, "Confirma Alteração?") == 0) {
-            curso.setCargaHoraria(Integer.parseInt(txtCargaHoraria.getText()));
-            curso.setValor(Double.parseDouble(txtValorCurso.getText()));
+
+            /*Tratamento de erros de Conversao de String vazia*/
+            try {
+                if (txtCargaHoraria.getText() != null) {
+                    curso.setCargaHoraria(Integer.parseInt(txtCargaHoraria.getText()));
+                }
+            } catch (NumberFormatException e) {
+                curso.setCargaHoraria(0);
+            }
+
+            try {
+                if (txtValorCurso.getText() != null) {
+                    curso.setValor(Double.parseDouble(txtValorCurso.getText()));
+                }
+            } catch (NumberFormatException e) {
+                curso.setValor(0);
+            }
+
+            try {
+                if (txtHoraInstrutor.getText() != null) {
+                    curso.setValorHoraInstrutor(Double.parseDouble(txtHoraInstrutor.getText()));
+                }
+            } catch (NumberFormatException e) {
+                curso.setValorHoraInstrutor(0);
+            }
+
+            //curso.setCargaHoraria(Integer.parseInt(txtCargaHoraria.getText()));
+            //curso.setValor(Double.parseDouble(txtValorCurso.getText()));
             curso.setDataVigencia(txtDataVigencia.getText());
-            curso.setValorHoraInstrutor(Double.parseDouble(txtHoraInstrutor.getText()));
+            //curso.setValorHoraInstrutor(Double.parseDouble(txtHoraInstrutor.getText()));
             curso.setPrograma(txtProgramaCurso.getText());
             daoCurso.alterar(curso);
         }
