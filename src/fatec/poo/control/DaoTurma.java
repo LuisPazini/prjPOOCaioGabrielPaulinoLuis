@@ -31,8 +31,9 @@ public class DaoTurma {
                     + "dataTermino,"
                     + "periodo,"
                     + "qtdVagas,"
-                    + "observacoes)"
-                    + "VALUES(?,?,?,?,?,?,?)");
+                    + "observacoes,"
+                    + "siglaCurso)"
+                    + "VALUES(?,?,?,?,?,?,?,?)");
             
             ps.setString(1, turma.getSiglaTurma());
             ps.setString(2, turma.getDescricao());
@@ -41,6 +42,7 @@ public class DaoTurma {
             ps.setString(5, turma.getPeriodo());
             ps.setInt(6, turma.getQtdVagas());
             ps.setString(7, turma.getObservacoes());
+            ps.setString(8, turma.getSiglaCurso());
             
             ps.execute();
         }catch(SQLException ex){
@@ -51,12 +53,14 @@ public class DaoTurma {
     public void alterar(Turma turma) {
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("UPDATE tbTurma SET descricao = ?,"
+            ps = conn.prepareStatement("UPDATE tbTurma SET "
+                    + "descricao = ?,"
                     + "dataInicio = ?,"
                     + "dataTermino = ?,"
                     + "periodo = ?,"
                     + "qtdVagas = ?,"
-                    + "observacoes =?"
+                    + "observacoes =?,"
+                    + "siglaCurso =?"
                     + "WHERE siglaTurma = ?");
 
             ps.setString(1, turma.getDescricao());
@@ -65,7 +69,8 @@ public class DaoTurma {
             ps.setString(4, turma.getPeriodo());
             ps.setInt(5, turma.getQtdVagas());
             ps.setString(6, turma.getObservacoes());
-            ps.setString(7, turma.getSiglaTurma());
+            ps.setString(7, turma.getSiglaCurso());
+            ps.setString(8, turma.getSiglaTurma());
 
             ps.execute();
         } catch (SQLException ex) {
@@ -91,6 +96,7 @@ public class DaoTurma {
                 t.setPeriodo(rs.getString("periodo"));
                 t.setQtdVagas(rs.getInt("qtdVagas"));
                 t.setObservacoes(rs.getString("observacoes"));
+                t.setSiglaCurso(rs.getString("siglaCurso"));
             }
         } catch (SQLException ex) {
             System.out.println(ex.toString());

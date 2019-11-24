@@ -1,5 +1,5 @@
 create table tbCurso (
-	sigla varchar2(5) not null,
+	sigla varchar2(8) not null,
 	nome varchar2(100) not null,
 	cargaHoraria number (5,0), 
 	valor number (8,2),
@@ -9,14 +9,14 @@ create table tbCurso (
 );
 
 create table tbTurma (
-	siglaTurma varchar2(5) not null,
+	siglaTurma varchar2(15) not null,
 	descricao varchar2(200) not null,
 	dataInicio varchar2(10),
 	dataTermino varchar2(10),
 	periodo varchar2(20),
 	qtdVagas number (3,0),
 	observacoes varchar2(200),
-	siglaCurso varchar2(5) not null
+	siglaCurso varchar2(8)
 );
 
 
@@ -64,8 +64,10 @@ create table tbAluno (
 
 alter table tbCurso add constraint pk_tbCurso primary key (sigla);
 
+
+alter table tbTurma add constraint fk_tbTurma foreign key(siglaCurso) references tbCurso (sigla);
 alter table tbTurma add constraint pk_tbTurma primary key (siglaTurma);
-alter table tbTurma add constraint Fk_tbTurma foreign key(siglaCurso) references tbCurso (sigla);
+
 
 alter table tbInstrutor add constraint pk_tbInstrutor primary key (cpf);
 

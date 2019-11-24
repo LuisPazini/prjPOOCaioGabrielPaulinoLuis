@@ -108,8 +108,8 @@ public class DaoCurso {
             System.out.println(ex.toString());
         }
     }
-/*
-    public ArrayList<Curso> listarSiglas() {
+
+    /*public ArrayList<Curso> listarCurso() {
         PreparedStatement ps = null;
 
         try {
@@ -144,14 +144,13 @@ public class DaoCurso {
             return null;
         }
 
-    }
-    */
+    }*/
+    
         public ArrayList<String> listarSiglas() {
         PreparedStatement ps = null;
 
         try {
-            ps = conn.prepareStatement("SELECT sigla"
-                    + " FROM tbCurso");
+            ps = conn.prepareStatement("SELECT sigla FROM tbCurso");
             
             ResultSet rs = ps.executeQuery();
 

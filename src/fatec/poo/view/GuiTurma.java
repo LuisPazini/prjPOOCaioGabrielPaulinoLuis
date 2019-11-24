@@ -8,6 +8,7 @@ package fatec.poo.view;
 import fatec.poo.control.Conexao;
 import fatec.poo.control.DaoTurma;
 import fatec.poo.control.DaoCurso;
+import fatec.poo.model.Curso;
 import fatec.poo.model.Turma;
 
 import java.util.ArrayList;
@@ -82,18 +83,38 @@ public class GuiTurma extends javax.swing.JFrame {
 
         btnConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/pesq.png"))); // NOI18N
         btnConsultar.setText("Consultar");
+        btnConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarActionPerformed(evt);
+            }
+        });
 
         btnInserir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/add.png"))); // NOI18N
         btnInserir.setText("Inserir");
         btnInserir.setEnabled(false);
+        btnInserir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInserirActionPerformed(evt);
+            }
+        });
 
         btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Alterar.png"))); // NOI18N
         btnAlterar.setText("Alterar");
         btnAlterar.setEnabled(false);
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Eraser.png"))); // NOI18N
         btnExcluir.setText("Excluir");
         btnExcluir.setEnabled(false);
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/exit.png"))); // NOI18N
         btnSair.setText("Sair");
@@ -112,6 +133,8 @@ public class GuiTurma extends javax.swing.JFrame {
         jLabel5.setText("Qtde Vagas");
 
         cbxPeriodo.setEditable(true);
+        cbxPeriodo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Matutino", "Vespertino", "Noturno" }));
+        cbxPeriodo.setSelectedIndex(-1);
         cbxPeriodo.setEnabled(false);
 
         jLabel6.setText("Período");
@@ -223,20 +246,183 @@ public class GuiTurma extends javax.swing.JFrame {
         conexao.setConnectionString("jdbc:oracle:thin:@localhost:1521:xe");
         //conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
         daoTurma = new DaoTurma(conexao.conectar());
-        
+        daoCurso = new DaoCurso(conexao.conectar());
+
+        /*ArrayList<Curso> listaCurso;
+        listaCurso = daoCurso.listarCurso();*/
         ArrayList<String> listaSiglas;
         listaSiglas = daoCurso.listarSiglas();
-        
+
         for (String siglas : listaSiglas) {
             cbxCurso.addItem(siglas);
         }
-        
+
+        cbxCurso.setSelectedItem(null);
+        txtSiglaTurma.setEnabled(true);
     }//GEN-LAST:event_formWindowOpened
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         conexao.fecharConexao();
         dispose();
     }//GEN-LAST:event_formWindowClosing
+
+    private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
+        turma = new Turma(txtSiglaTurma.getText(), txtNome.getText());
+        turma.setDataInicio(txtDataInicio.getText());
+        turma.setDataTermino(txtDataTermino.getText());
+        turma.setPeriodo((String) cbxPeriodo.getSelectedItem());
+        turma.setSiglaCurso((String) cbxCurso.getSelectedItem());//Aqui
+
+        /*Tratamento de erros de Conversao de String vazia*/
+        try {
+            if (txtQtdeVagas.getText() != null) {
+                turma.setQtdVagas(Integer.parseInt(txtQtdeVagas.getText()));
+            }
+        } catch (NumberFormatException e) {
+            turma.setQtdVagas(40);
+        }
+
+        daoTurma.inserir(turma);
+
+        txtSiglaTurma.setText("");
+        txtNome.setText("");
+        txtDataInicio.setText("");
+        txtDataTermino.setText("");
+        cbxPeriodo.setSelectedItem(null);
+        txtQtdeVagas.setText("");
+        //cbxCurso.setSelectedItem(null);//Aqui
+
+        txtSiglaTurma.setEnabled(true);
+        txtNome.setEnabled(false);
+        txtDataInicio.setEnabled(false);
+        txtDataTermino.setEnabled(false);
+        cbxPeriodo.setEnabled(false);
+        txtQtdeVagas.setEnabled(false);
+        cbxCurso.setEnabled(true);//Aqui
+
+        txtSiglaTurma.requestFocus();
+
+        btnConsultar.setEnabled(true);
+        btnInserir.setEnabled(false);
+    }//GEN-LAST:event_btnInserirActionPerformed
+
+    private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+        turma = null;
+        turma = daoTurma.consultar(txtSiglaTurma.getText());
+
+        if (turma == null) {
+            txtSiglaTurma.setEnabled(false);
+            txtNome.setEnabled(true);
+            txtDataInicio.setEnabled(true);
+            txtDataTermino.setEnabled(true);
+            cbxPeriodo.setEnabled(true);
+            txtQtdeVagas.setEnabled(true);
+            cbxCurso.setEnabled(false);//Aqui
+
+            txtNome.requestFocus();
+
+            btnConsultar.setEnabled(false);
+            btnInserir.setEnabled(true);
+            btnAlterar.setEnabled(false);
+            btnExcluir.setEnabled(false);
+
+        } else {
+            txtNome.setText(turma.getDescricao());
+            txtDataInicio.setText(turma.getDataInicio());
+            txtDataTermino.setText(turma.getDataTermino());
+            cbxPeriodo.setSelectedItem(turma.getPeriodo());
+            txtQtdeVagas.setText(Integer.toString(turma.getQtdVagas()));
+            cbxCurso.setSelectedItem(turma.getSiglaCurso());//Aqui
+
+            txtSiglaTurma.setEnabled(false);
+            txtNome.setEnabled(true);
+            txtDataInicio.setEnabled(true);
+            txtDataTermino.setEnabled(true);
+            cbxPeriodo.setEnabled(true);
+            txtQtdeVagas.setEnabled(true);
+            cbxCurso.setEnabled(false);//Aqui
+
+            txtNome.requestFocus();
+
+            btnConsultar.setEnabled(false);
+            btnInserir.setEnabled(false);
+            btnAlterar.setEnabled(true);
+            btnExcluir.setEnabled(true);
+        }
+    }//GEN-LAST:event_btnConsultarActionPerformed
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        if (JOptionPane.showConfirmDialog(null, "Confirma Alteração?") == 0) {
+            turma.setDescricao(txtNome.getText());
+            turma.setDataInicio(txtDataInicio.getText());
+            turma.setDataTermino(txtDataTermino.getText());
+            turma.setPeriodo((String) cbxPeriodo.getSelectedItem());
+            turma.setSiglaCurso((String) cbxCurso.getSelectedItem());//Aqui
+
+            /*Tratamento de erros de Conversao de String vazia*/
+            try {
+                if (txtQtdeVagas.getText() != null) {
+                    turma.setQtdVagas(Integer.parseInt(txtQtdeVagas.getText()));
+                }
+            } catch (NumberFormatException e) {
+                turma.setQtdVagas(40);
+            }
+
+            daoTurma.alterar(turma);
+        }
+
+        txtSiglaTurma.setText("");
+        txtNome.setText("");
+        txtDataInicio.setText("");
+        txtDataTermino.setText("");
+        cbxPeriodo.setSelectedItem(null);
+        txtQtdeVagas.setText("");
+        //cbxCurso.setSelectedItem(null);//Aqui
+
+        txtSiglaTurma.setEnabled(true);
+        txtNome.setEnabled(false);
+        txtDataInicio.setEnabled(false);
+        txtDataTermino.setEnabled(false);
+        cbxPeriodo.setEnabled(false);
+        txtQtdeVagas.setEnabled(false);
+        cbxCurso.setEnabled(true);//Aqui
+
+        txtSiglaTurma.requestFocus();
+
+        btnConsultar.setEnabled(true);
+        btnInserir.setEnabled(false);
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+    }//GEN-LAST:event_btnAlterarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        if (JOptionPane.showConfirmDialog(null, "Confirma Exclusão?") == 0) {
+            daoTurma.excluir(turma);
+
+            txtSiglaTurma.setText("");
+            txtNome.setText("");
+            txtDataInicio.setText("");
+            txtDataTermino.setText("");
+            cbxPeriodo.setSelectedItem(null);
+            txtQtdeVagas.setText("");
+            //cbxCurso.setSelectedItem(null);//Aqui
+
+            txtSiglaTurma.setEnabled(true);
+            txtNome.setEnabled(false);
+            txtDataInicio.setEnabled(false);
+            txtDataTermino.setEnabled(false);
+            cbxPeriodo.setEnabled(false);
+            txtQtdeVagas.setEnabled(false);
+            cbxCurso.setEnabled(true);//Aqui
+
+            txtSiglaTurma.requestFocus();
+
+            btnConsultar.setEnabled(true);
+            btnInserir.setEnabled(false);
+            btnAlterar.setEnabled(false);
+            btnExcluir.setEnabled(false);
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -300,5 +486,5 @@ public class GuiTurma extends javax.swing.JFrame {
     private DaoTurma daoTurma = null;
     private DaoCurso daoCurso = null;
     private Turma turma = null;
-    private Conexao conexao = null; 
+    private Conexao conexao = null;
 }

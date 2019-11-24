@@ -17,6 +17,7 @@ public class Turma {
     private String periodo;
     private int qtdVagas;
     private String observacoes;
+    private String siglaCurso;
     private Instrutor instrutor;
     private ArrayList<Matricula> matriculas;
     private Curso curso;
@@ -49,6 +50,10 @@ public class Turma {
 
     public void setObservacoes(String observacoes) {
         this.observacoes = observacoes;
+    }
+    
+    public void setSiglaCurso(String siglaCurso) {
+        this.siglaCurso = siglaCurso;
     }
     
     public Instrutor getInstrutor(){
@@ -100,6 +105,10 @@ public class Turma {
 
     public String getObservacoes() {
         return observacoes;
+    }
+    
+    public String getSiglaCurso() {
+        return siglaCurso;
     }
 
     public ArrayList<Matricula> getMatriculas() {
