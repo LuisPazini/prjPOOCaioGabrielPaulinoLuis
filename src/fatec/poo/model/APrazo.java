@@ -7,16 +7,16 @@ package fatec.poo.model;
  * @author Luis
  * 
  */
-public class APrazo extends Matricula {
+public class APrazo {
     
     private double valor;
     private String dtVencimento;
     private double taxaJuros;
     private int qtdeMensalidade;
+    private String DataMatricula;
+    private String cpf;
+    private String siglaTurma;
 
-    public APrazo(String data) {
-        super(data);
-    }
     
     public void setValor(double valor) {
         this.valor = valor;
@@ -33,4 +33,47 @@ public class APrazo extends Matricula {
     public void setQtdeMensalidade(int qtdeMensalidade) {
         this.qtdeMensalidade = qtdeMensalidade;
     }
+
+    public void setDataMatricula(String DataMatricula) {
+        this.DataMatricula = DataMatricula;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public void setSiglaTurma(String siglaTurma) {
+        this.siglaTurma = siglaTurma;
+    }
+
+    public double getValor() {
+        return valor;
+    }
+
+    public String getDtVencimento() {
+        return dtVencimento;
+    }
+
+    public double getTaxaJuros() {
+        return taxaJuros;
+    }
+
+    public int getQtdeMensalidade() {
+        return qtdeMensalidade;
+    }
+
+    public String getDataMatricula() {
+        return DataMatricula;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public String getSiglaTurma() {
+        return siglaTurma;
+    }
+    
+    
+    
 }

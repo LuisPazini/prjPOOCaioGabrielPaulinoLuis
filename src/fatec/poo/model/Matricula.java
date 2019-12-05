@@ -21,6 +21,14 @@ public class Matricula {
         this.data = data;
     }
 
+    public void setaPrazo(APrazo aPrazo) {
+        this.aPrazo = aPrazo;
+    }
+
+    public void setaVista(AVista aVista) {
+        this.aVista = aVista;
+    }
+
     public void setQtdeFaltas(int qtdeFaltas) {
         this.qtdeFaltas = qtdeFaltas;
     }
@@ -44,6 +52,16 @@ public class Matricula {
     public void setAluno(Aluno aluno) {
         this.aluno = aluno;
     }
+
+    public APrazo getaPrazo() {
+        return aPrazo;
+    }
+
+    public AVista getaVista() {
+        return aVista;
+    }
+    
+    
     
     /*Tipo de Matrícula:
      *  1- A Vista
@@ -59,4 +77,16 @@ public class Matricula {
     }
     */
     //public abstract void emitirCarne();
+
+    public String getData() {
+        return data;
+    }
+
+    public int getQtdeFaltas() {
+        return qtdeFaltas;
+    }
+
+    public double getNota() {
+        return nota;
+    }
 }

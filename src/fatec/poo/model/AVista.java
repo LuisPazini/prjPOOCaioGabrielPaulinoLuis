@@ -7,17 +7,15 @@ package fatec.poo.model;
  * @author Luis
  * 
  */
-public class AVista extends Matricula{
+public class AVista {
     
     private double valor;
     private int agencia;
     private int nCheque;
     private String preData;
-    private Matricula matricula;
-
-    public AVista(String data) {
-        super(data);
-    }
+    private String DataMatricula;
+    private String cpf;
+    private String siglaTurma;
     
     public void setValor(double valor) {
         this.valor = valor;
@@ -34,4 +32,47 @@ public class AVista extends Matricula{
     public void setPreData(String preData) {
         this.preData = preData;
     }
+
+    public void setDataMatricula(String DataMatricula) {
+        this.DataMatricula = DataMatricula;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public void setSiglaTurma(String siglaTurma) {
+        this.siglaTurma = siglaTurma;
+    }
+
+    public double getValor() {
+        return valor;
+    }
+
+    public int getAgencia() {
+        return agencia;
+    }
+
+    public int getnCheque() {
+        return nCheque;
+    }
+
+    public String getPreData() {
+        return preData;
+    }
+
+    public String getDataMatricula() {
+        return DataMatricula;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public String getSiglaTurma() {
+        return siglaTurma;
+    }
+    
+
+    
 }
