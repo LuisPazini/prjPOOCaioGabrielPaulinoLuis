@@ -381,11 +381,6 @@ public class GuiAluno extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
-        conexao.fecharConexao();
-        dispose();
-    }//GEN-LAST:event_btnSairActionPerformed
-
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         conexao = new Conexao("BD1913014", "BD1913014");
         conexao.setDriver("oracle.jdbc.driver.OracleDriver");
@@ -398,6 +393,132 @@ public class GuiAluno extends javax.swing.JFrame {
         conexao.fecharConexao();
         dispose();
     }//GEN-LAST:event_formWindowClosing
+
+    private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
+        conexao.fecharConexao();
+        dispose();
+    }//GEN-LAST:event_btnSairActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        if (JOptionPane.showConfirmDialog(null, "Confirma Exclusão?") == 0) {
+            daoAluno.excluir(aluno);
+
+            txtNome.setText("");
+            txtDataNascto.setText("");
+            txtEndereco.setText("");
+            txtNumero.setText("");
+            txtBairro.setText("");
+            txtCidade.setText("");
+            cbxEstado.setSelectedItem(null);
+            txtCEP.setText("");
+            txtTelRes.setText("");
+            txtCelular.setText("");
+            cbxSexo.setSelectedItem(null);
+            cbxEstadoCivil.setSelectedItem(null);
+            txtRG.setText("");
+            txtCPF.setText("");
+            txtEmail.setText("");
+            cbxEscolaridade.setSelectedItem(null);
+
+            txtCPF.setEnabled(true);
+            txtNome.setEnabled(false);
+            txtDataNascto.setEnabled(false);
+            txtEndereco.setEnabled(false);
+            txtNumero.setEnabled(false);
+            txtBairro.setEnabled(false);
+            txtCidade.setEnabled(false);
+            cbxEstado.setEnabled(false);
+            txtCEP.setEnabled(false);
+            txtTelRes.setEnabled(false);
+            txtCelular.setEnabled(false);
+            cbxSexo.setEnabled(false);
+            cbxEstadoCivil.setEnabled(false);
+            txtRG.setEnabled(false);
+            txtEmail.setEnabled(false);
+            cbxEscolaridade.setEnabled(false);
+
+            txtCPF.requestFocus();
+
+            btnConsultar.setEnabled(true);
+            btnInserir.setEnabled(false);
+            btnAlterar.setEnabled(false);
+            btnExcluir.setEnabled(false);
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        if (JOptionPane.showConfirmDialog(null, "Confirma Alteração?") == 0) {
+            aluno.setNome(txtNome.getText());
+            aluno.setDataNasc(txtDataNascto.getText());
+            aluno.setEndereco(txtEndereco.getText());
+
+            /*Tratamento de erros de Conversao de String vazia*/
+
+            try {
+                if (txtNumero.getText() != null) {
+                    aluno.setNumero(Integer.parseInt(txtNumero.getText()));
+                }
+            } catch (NumberFormatException e) {
+                aluno.setNumero(0);
+            }
+
+            //aluno.setNumero(Integer.parseInt(txtNumero.getText()));
+            aluno.setBairro(txtBairro.getText());
+            aluno.setCidade(txtCidade.getText());
+            aluno.setEstado((String) cbxEstado.getSelectedItem());
+            aluno.setCEP(txtCEP.getText());
+            aluno.setTelefone(txtTelRes.getText());
+            aluno.setCelular(txtCelular.getText());
+            aluno.setSexo((String) cbxSexo.getSelectedItem());
+            aluno.setEstadoCivil((String) cbxEstadoCivil.getSelectedItem());
+            aluno.setRG(txtRG.getText());
+            aluno.setEmail(txtEmail.getText());
+            aluno.setEscolaridade((String) cbxEscolaridade.getSelectedItem());
+
+            daoAluno.alterar(aluno);
+        }
+
+        txtCPF.setText("");
+        txtNome.setText("");
+        txtDataNascto.setText("");
+        txtEndereco.setText("");
+        txtNumero.setText("");
+        txtBairro.setText("");
+        txtCidade.setText("");
+        cbxEstado.setSelectedItem(null);
+        txtCEP.setText("");
+        txtTelRes.setText("");
+        txtCelular.setText("");
+        cbxSexo.setSelectedItem(null);
+        cbxEstadoCivil.setSelectedItem(null);
+        txtRG.setText("");
+        txtEmail.setText("");
+        cbxEscolaridade.setSelectedItem(null);
+
+        txtCPF.setEnabled(true);
+        txtNome.setEnabled(false);
+        txtDataNascto.setEnabled(false);
+        txtEndereco.setEnabled(false);
+        txtNumero.setEnabled(false);
+        txtBairro.setEnabled(false);
+        txtCidade.setEnabled(false);
+        cbxEstado.setEnabled(false);
+        txtCEP.setEnabled(false);
+        txtTelRes.setEnabled(false);
+        txtCelular.setEnabled(false);
+        cbxSexo.setEnabled(false);
+        cbxEstadoCivil.setEnabled(false);
+        txtRG.setEnabled(false);
+        txtEmail.setEnabled(false);
+        cbxEscolaridade.setEnabled(false);
+
+        txtCPF.requestFocus();
+
+        btnConsultar.setEnabled(true);
+        btnInserir.setEnabled(false);
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+    }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
         aluno = new Aluno(txtNome.getText(), txtCPF.getText());
@@ -549,130 +670,7 @@ public class GuiAluno extends javax.swing.JFrame {
             txtCPF.setText("");
             txtCPF.requestFocus();
         }
-
     }//GEN-LAST:event_btnConsultarActionPerformed
-
-    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-        if (JOptionPane.showConfirmDialog(null, "Confirma Alteração?") == 0) {
-            aluno.setNome(txtNome.getText());
-            aluno.setDataNasc(txtDataNascto.getText());
-            aluno.setEndereco(txtEndereco.getText());
-
-            /*Tratamento de erros de Conversao de String vazia*/
-            
-            try {
-                if (txtNumero.getText() != null) {
-                    aluno.setNumero(Integer.parseInt(txtNumero.getText()));
-                }
-            } catch (NumberFormatException e) {
-                aluno.setNumero(0);
-            }
-
-            //aluno.setNumero(Integer.parseInt(txtNumero.getText()));
-            aluno.setBairro(txtBairro.getText());
-            aluno.setCidade(txtCidade.getText());
-            aluno.setEstado((String) cbxEstado.getSelectedItem());
-            aluno.setCEP(txtCEP.getText());
-            aluno.setTelefone(txtTelRes.getText());
-            aluno.setCelular(txtCelular.getText());
-            aluno.setSexo((String) cbxSexo.getSelectedItem());
-            aluno.setEstadoCivil((String) cbxEstadoCivil.getSelectedItem());
-            aluno.setRG(txtRG.getText());
-            aluno.setEmail(txtEmail.getText());
-            aluno.setEscolaridade((String) cbxEscolaridade.getSelectedItem());
-
-            daoAluno.alterar(aluno);
-        }
-
-        txtCPF.setText("");
-        txtNome.setText("");
-        txtDataNascto.setText("");
-        txtEndereco.setText("");
-        txtNumero.setText("");
-        txtBairro.setText("");
-        txtCidade.setText("");
-        cbxEstado.setSelectedItem(null);
-        txtCEP.setText("");
-        txtTelRes.setText("");
-        txtCelular.setText("");
-        cbxSexo.setSelectedItem(null);
-        cbxEstadoCivil.setSelectedItem(null);
-        txtRG.setText("");
-        txtEmail.setText("");
-        cbxEscolaridade.setSelectedItem(null);
-
-        txtCPF.setEnabled(true);
-        txtNome.setEnabled(false);
-        txtDataNascto.setEnabled(false);
-        txtEndereco.setEnabled(false);
-        txtNumero.setEnabled(false);
-        txtBairro.setEnabled(false);
-        txtCidade.setEnabled(false);
-        cbxEstado.setEnabled(false);
-        txtCEP.setEnabled(false);
-        txtTelRes.setEnabled(false);
-        txtCelular.setEnabled(false);
-        cbxSexo.setEnabled(false);
-        cbxEstadoCivil.setEnabled(false);
-        txtRG.setEnabled(false);
-        txtEmail.setEnabled(false);
-        cbxEscolaridade.setEnabled(false);
-
-        txtCPF.requestFocus();
-
-        btnConsultar.setEnabled(true);
-        btnInserir.setEnabled(false);
-        btnAlterar.setEnabled(false);
-        btnExcluir.setEnabled(false);
-
-    }//GEN-LAST:event_btnAlterarActionPerformed
-
-    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        if (JOptionPane.showConfirmDialog(null, "Confirma Exclusão?") == 0) {
-            daoAluno.excluir(aluno);
-
-            txtNome.setText("");
-            txtDataNascto.setText("");
-            txtEndereco.setText("");
-            txtNumero.setText("");
-            txtBairro.setText("");
-            txtCidade.setText("");
-            cbxEstado.setSelectedItem(null);
-            txtCEP.setText("");
-            txtTelRes.setText("");
-            txtCelular.setText("");
-            cbxSexo.setSelectedItem(null);
-            cbxEstadoCivil.setSelectedItem(null);
-            txtRG.setText("");
-            txtCPF.setText("");
-            txtEmail.setText("");
-            cbxEscolaridade.setSelectedItem(null);
-
-            txtCPF.setEnabled(true);
-            txtNome.setEnabled(false);
-            txtDataNascto.setEnabled(false);
-            txtEndereco.setEnabled(false);
-            txtNumero.setEnabled(false);
-            txtBairro.setEnabled(false);
-            txtCidade.setEnabled(false);
-            cbxEstado.setEnabled(false);
-            txtCEP.setEnabled(false);
-            txtTelRes.setEnabled(false);
-            txtCelular.setEnabled(false);
-            cbxSexo.setEnabled(false);
-            cbxEstadoCivil.setEnabled(false);
-            txtRG.setEnabled(false);
-            txtEmail.setEnabled(false);
-            cbxEscolaridade.setEnabled(false);
-
-            txtCPF.requestFocus();
-
-            btnConsultar.setEnabled(true);
-            btnInserir.setEnabled(false);
-            btnAlterar.setEnabled(false);
-            btnExcluir.setEnabled(false);
-        }
-    }//GEN-LAST:event_btnExcluirActionPerformed
 
     /**
      * @param args the command line arguments
