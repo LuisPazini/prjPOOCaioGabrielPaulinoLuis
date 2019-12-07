@@ -151,11 +151,13 @@ public class GuiMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemSairActionPerformed
 
     private void jMenuItemAlocarInstrutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAlocarInstrutorActionPerformed
-        // TODO add your handling code here:
+        GuiAlocarInstrutor guiAlocarInstrutor = new GuiAlocarInstrutor();
+        guiAlocarInstrutor.setVisible(true);
     }//GEN-LAST:event_jMenuItemAlocarInstrutorActionPerformed
 
     private void jMenuItemEfetuarMatriculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemEfetuarMatriculaActionPerformed
-        // TODO add your handling code here:
+        GuiAlocarEfetuarMatricula guiAlocarEfetuarMatricula = new GuiAlocarEfetuarMatricula();
+        guiAlocarEfetuarMatricula.setVisible(true);
     }//GEN-LAST:event_jMenuItemEfetuarMatriculaActionPerformed
 
     /**

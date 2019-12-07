@@ -1,12 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package fatec.poo.view;
 
+import fatec.poo.control.Conexao;
+import fatec.poo.control.DaoCurso;
+import fatec.poo.control.DaoTurma;
+import fatec.poo.control.DaoInstrutor;
+import fatec.poo.model.Instrutor;
+import fatec.poo.model.Turma;
+import java.util.ArrayList;
+
 /**
- *
+ * @author Gabriel Paulino
  * @author 0030481813020
  */
 public class GuiAlocarInstrutor extends javax.swing.JFrame {
@@ -41,6 +44,14 @@ public class GuiAlocarInstrutor extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Alocar Instrutor");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jLabel1.setText("Curso");
 
@@ -52,61 +63,82 @@ public class GuiAlocarInstrutor extends javax.swing.JFrame {
 
         btnSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/exit.png"))); // NOI18N
         btnSair.setText("Sair");
+        btnSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSairActionPerformed(evt);
+            }
+        });
 
         btnLiberar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Eraser.png"))); // NOI18N
         btnLiberar.setText("Liberar");
 
         btnAlocar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/add.png"))); // NOI18N
         btnAlocar.setText("Alocar");
+        btnAlocar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlocarActionPerformed(evt);
+            }
+        });
 
-        cbxCurso.setSelectedIndex(-1);
+        cbxCurso.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbxCursoItemStateChanged(evt);
+            }
+        });
 
-        cbxTurma.setSelectedIndex(-1);
+        cbxTurma.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                cbxTurmaFocusGained(evt);
+            }
+        });
 
-        cbxInstrutor.setSelectedIndex(-1);
         cbxInstrutor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbxInstrutorActionPerformed(evt);
             }
         });
 
-        lblSituacao.setBorder(new javax.swing.border.SoftBevelBorder(1));
+        lblSituacao.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(37, 37, 37)
+                .addGap(46, 46, 46)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(cbxCurso, 0, 92, Short.MAX_VALUE)
-                        .addComponent(cbxTurma, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblSituacao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(cbxInstrutor, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(130, Short.MAX_VALUE)
-                .addComponent(btnAlocar, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnLiberar, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnSair)
+                    .addComponent(cbxInstrutor, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cbxCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbxTurma, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblSituacao, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(39, 39, 39)
+                .addComponent(btnAlocar, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnLiberar)
+                .addGap(18, 18, 18)
+                .addComponent(btnSair)
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnAlocar, btnLiberar, btnSair});
 
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {cbxTurma, lblSituacao});
+
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(33, 33, 33)
+                .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(cbxCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -119,16 +151,20 @@ public class GuiAlocarInstrutor extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(cbxInstrutor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel4)
-                    .addComponent(lblSituacao, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(48, 48, 48)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblSituacao, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAlocar)
                     .addComponent(btnSair)
                     .addComponent(btnLiberar))
-                .addContainerGap())
+                .addGap(26, 26, 26))
         );
+
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnAlocar, btnLiberar, btnSair});
+
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {cbxCurso, cbxInstrutor, cbxTurma, lblSituacao});
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -136,6 +172,83 @@ public class GuiAlocarInstrutor extends javax.swing.JFrame {
     private void cbxInstrutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxInstrutorActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbxInstrutorActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        conexao.fecharConexao();
+        dispose();
+    }//GEN-LAST:event_formWindowClosing
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        conexao = new Conexao("BD1913014", "BD1913014");
+        conexao.setDriver("oracle.jdbc.driver.OracleDriver");
+        conexao.setConnectionString("jdbc:oracle:thin:@localhost:1521:xe");
+        //conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
+
+        btnLiberar.setEnabled(false);
+
+        //daoTurma = new DaoTurma(conexao.conectar());
+        daoCurso = new DaoCurso(conexao.conectar());
+        daoInstrutor = new DaoInstrutor(conexao.conectar());
+
+        ArrayList<String> listaSiglas;
+        listaSiglas = daoCurso.listarSiglas();
+
+        for (String siglas : listaSiglas) {
+            cbxCurso.addItem(siglas);
+        }
+
+        cbxCurso.setSelectedItem(null);
+        cbxTurma.setEnabled(true);
+
+        ArrayList<String> nomeInstrutores;
+        nomeInstrutores = daoInstrutor.listarInstrutores();
+
+        for (String nomes : nomeInstrutores) {
+            cbxInstrutor.addItem(nomes);
+        }
+        cbxInstrutor.setSelectedItem(null);
+
+
+    }//GEN-LAST:event_formWindowOpened
+
+    private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
+        conexao.fecharConexao();
+        dispose();
+    }//GEN-LAST:event_btnSairActionPerformed
+
+    private void cbxTurmaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cbxTurmaFocusGained
+        cbxTurma.removeAllItems();
+        daoTurma = new DaoTurma(conexao.conectar());
+        cbxTurma.setSelectedItem(null);
+        ArrayList<String> listaTurmas;
+        listaTurmas = daoTurma.listarTurmas((String) cbxCurso.getSelectedItem());
+
+        for (String turmas : listaTurmas) {
+            cbxTurma.addItem(turmas);
+        }
+    }//GEN-LAST:event_cbxTurmaFocusGained
+
+    private void cbxCursoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxCursoItemStateChanged
+        cbxTurma.removeAllItems();
+    }//GEN-LAST:event_cbxCursoItemStateChanged
+
+    private void btnAlocarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlocarActionPerformed
+        daoTurma = new DaoTurma(conexao.conectar());
+        String descricao = daoTurma.consultar((String) cbxTurma.getSelectedItem()).getDescricao();
+        turma = new Turma((String) cbxTurma.getSelectedItem(), descricao);
+
+        daoInstrutor = new DaoInstrutor(conexao.conectar());
+        String cpfInstrutor = daoInstrutor.consultarCPF((String) cbxInstrutor.getSelectedItem()).getCpf();
+        instrutor = new Instrutor((String) cbxInstrutor.getSelectedItem(), cpfInstrutor);
+
+        //t.setInstrutor(i);
+        instrutor.addTurma(turma);
+
+        lblSituacao.setText("Alocada");
+        btnLiberar.setEnabled(true);
+        btnAlocar.setEnabled(false);
+
+    }//GEN-LAST:event_btnAlocarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -185,4 +298,11 @@ public class GuiAlocarInstrutor extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel lblSituacao;
     // End of variables declaration//GEN-END:variables
+    private Conexao conexao = null;
+    private Turma turma = null;
+    private Instrutor instrutor = null;
+    private DaoTurma daoTurma = null;
+    private DaoCurso daoCurso = null;
+    private DaoInstrutor daoInstrutor = null;
+
 }

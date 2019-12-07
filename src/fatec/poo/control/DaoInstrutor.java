@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 
 import fatec.poo.model.Instrutor;
+import java.util.ArrayList;
 
 /**
  * @author Caio
@@ -13,13 +14,13 @@ import fatec.poo.model.Instrutor;
  * @author Luis
  */
 public class DaoInstrutor {
-    
+
     private Connection conn;
 
     public DaoInstrutor(Connection conn) {
         this.conn = conn;
     }
-    
+
     public void inserir(Instrutor instrutor) {
         PreparedStatement ps = null;
         try {
@@ -42,7 +43,7 @@ public class DaoInstrutor {
                     + "formacao,"
                     + "areaAtuacao)"
                     + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-            
+
             ps.setString(1, instrutor.getNome());
             ps.setString(2, instrutor.getDataNasc());
             ps.setString(3, instrutor.getEndereco());
@@ -60,13 +61,13 @@ public class DaoInstrutor {
             ps.setString(15, instrutor.getEmail());
             ps.setString(16, instrutor.getFormacao());
             ps.setString(17, instrutor.getAreaAtuacao());
-            
+
             ps.execute();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
     }
-    
+
     public void alterar(Instrutor instrutor) {
         PreparedStatement ps = null;
         try {
@@ -112,7 +113,7 @@ public class DaoInstrutor {
             System.out.println(ex.toString());
         }
     }
-    
+
     public Instrutor consultar(String cpf) {
         Instrutor i = null;
 
@@ -128,7 +129,7 @@ public class DaoInstrutor {
                 i = new Instrutor(rs.getString("nome"), cpf);
                 i.setDataNasc(rs.getString("dataNasc"));
                 i.setEndereco(rs.getString("endereco"));
-                i.setNumero(rs.getInt("numero"));                
+                i.setNumero(rs.getInt("numero"));
                 i.setBairro(rs.getString("bairro"));
                 i.setCidade(rs.getString("cidade"));
                 i.setEstado(rs.getString("estado"));
@@ -147,8 +148,8 @@ public class DaoInstrutor {
         }
         return (i);
     }
-    
-        public void excluir(Instrutor instrutor) {
+
+    public void excluir(Instrutor instrutor) {
         PreparedStatement ps = null;
         try {
             ps = conn.prepareStatement("DELETE FROM tbInstrutor WHERE cpf = ?");
@@ -160,7 +161,62 @@ public class DaoInstrutor {
             System.out.println(ex.toString());
         }
     }
-    
-    
-    
+
+    public ArrayList<String> listarInstrutores() {
+        PreparedStatement ps = null;
+
+        try {
+            ps = conn.prepareStatement("SELECT nome FROM tbInstrutor");
+
+            ResultSet rs = ps.executeQuery();
+
+            ArrayList<String> nomeInstrutor = new ArrayList<String>();
+
+            while (rs.next()) {
+
+                nomeInstrutor.add(rs.getString("nome"));
+            }
+            return nomeInstrutor;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+
+    }
+
+    public Instrutor consultarCPF(String nome) {
+        Instrutor i = null;
+
+        PreparedStatement ps = null;
+        try {
+            ps = conn.prepareStatement("SELECT * FROM tbInstrutor WHERE "
+                    + "nome = ?");
+
+            ps.setString(1, nome);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next() == true) {
+                i = new Instrutor(nome, rs.getString("cpf"));
+                i.setDataNasc(rs.getString("dataNasc"));
+                i.setEndereco(rs.getString("endereco"));
+                i.setNumero(rs.getInt("numero"));
+                i.setBairro(rs.getString("bairro"));
+                i.setCidade(rs.getString("cidade"));
+                i.setEstado(rs.getString("estado"));
+                i.setCEP(rs.getString("cep"));
+                i.setTelefone(rs.getString("telefone"));
+                i.setCelular(rs.getString("celular"));
+                i.setSexo(rs.getString("sexo"));
+                i.setEstadoCivil(rs.getString("estadoCivil"));
+                i.setRG(rs.getString("rg"));
+                i.setEmail(rs.getString("email"));
+                i.setFormacao(rs.getString("formacao"));
+                i.setAreaAtuacao(rs.getString("areaAtuacao"));
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+        }
+        return (i);
+    }
+
 }

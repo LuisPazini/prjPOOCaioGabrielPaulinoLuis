@@ -1,11 +1,12 @@
 package fatec.poo.model;
+
 import java.util.ArrayList;
 
 /**
  * @author Caio
  * @author Gabriel Paulino
  * @author Luis
- * 
+ *
  */
 public class Instrutor extends Pessoa {
 
@@ -25,7 +26,7 @@ public class Instrutor extends Pessoa {
     public void setAreaAtuacao(String areaAtuacao) {
         this.areaAtuacao = areaAtuacao;
     }
-    
+
     public void addTurma(Turma t) {
         turmas.add(t);
         t.setInstrutor(this);
@@ -38,5 +39,5 @@ public class Instrutor extends Pessoa {
     public String getAreaAtuacao() {
         return areaAtuacao;
     }
-    
+
 }

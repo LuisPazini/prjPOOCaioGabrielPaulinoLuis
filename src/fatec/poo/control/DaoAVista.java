@@ -29,7 +29,7 @@ public class DaoAVista {
         try {
             ps = conn.prepareStatement("SELECT * FROM tbAVista"
                     + "WHERE dataMatricula = ?,"
-                    + "and cpf = ?,"
+                    + "and cpfAluno = ?,"
                     + "and siglaTurma= ?");
             
             ps.setString(1, data);
@@ -42,10 +42,11 @@ public class DaoAVista {
                 v.setCpf(cpf);
                 v.setDataMatricula(data);
                 v.setSiglaTurma(siglaTurma);
-                v.setAgencia(rs.getInt("Agencia"));
-                v.setNCheque(rs.getInt("NCheque"));
-                v.setPreData(rs.getString("PreData"));
-                v.setValor(rs.getDouble("Valor"));
+                v.setValor(rs.getDouble("valor"));
+                v.setAgencia(rs.getInt("agencia"));
+                v.setNCheque(rs.getInt("nCheque"));
+                v.setPreData(rs.getString("preData"));
+                
             }
         } catch (SQLException ex) {
             System.out.println(ex.toString());

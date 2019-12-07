@@ -13,7 +13,7 @@ public class APrazo {
     private String dtVencimento;
     private double taxaJuros;
     private int qtdeMensalidade;
-    private String DataMatricula;
+    private String dataMatricula;
     private String cpf;
     private String siglaTurma;
 
@@ -35,7 +35,7 @@ public class APrazo {
     }
 
     public void setDataMatricula(String DataMatricula) {
-        this.DataMatricula = DataMatricula;
+        this.dataMatricula = DataMatricula;
     }
 
     public void setCpf(String cpf) {
@@ -63,7 +63,7 @@ public class APrazo {
     }
 
     public String getDataMatricula() {
-        return DataMatricula;
+        return dataMatricula;
     }
 
     public String getCpf() {

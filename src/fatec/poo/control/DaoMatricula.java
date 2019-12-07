@@ -30,11 +30,11 @@ public class DaoMatricula {
         PreparedStatement ps = null;
         try {
             ps = conn.prepareStatement("INSERT INTO tbMatricula("
-                    + "cpf,"
+                    + "cpfAluno,"
                     + "siglaTurma,"
                     + "data,"
-                    + "QtdeFaltas,"
-                    + "Nota) "
+                    + "qtdeFaltas,"
+                    + "nota) "
                     + "VALUES(?,?,?,?,?)");
             
             ps.setString(1, matricula.getAluno().getCpf());
@@ -52,11 +52,11 @@ public class DaoMatricula {
         PreparedStatement ps = null;
         try {
             ps = conn.prepareStatement("UPDATE tbMAtricula SET "
-                    + "cpf = ?,"
-                    + "siglaturma = ?,"
+                    + "cpfAluno = ?,"
+                    + "siglaTurma = ?,"
                     + "data = ?,"
-                    + "QtdeFaltas = ?,"
-                    + "Nota = ?,");
+                    + "qtdeFaltas = ?,"
+                    + "nota = ?,");
 
             ps.setString(1, matricula.getAluno().getCpf());
             ps.setString(2, matricula.getTurma().getSiglaTurma());
@@ -78,7 +78,7 @@ public class DaoMatricula {
         PreparedStatement ps = null;
         try {
             ps = conn.prepareStatement("SELECT * FROM tbMatricula"
-                    + "WHERE cpf = ?"
+                    + "WHERE cpfAluno = ?"
                     + "and siglaTurma= ?");
 
             ps.setString(1, cpf);
@@ -95,8 +95,8 @@ public class DaoMatricula {
                 m.setTurma(t);
                 m.setaPrazo(p);
                 m.setaVista(v);
-                m.setQtdeFaltas(rs.getInt("QtdeFaltas"));
-                m.setNota(rs.getDouble("Nota")); 
+                m.setQtdeFaltas(rs.getInt("qtdeFaltas"));
+                m.setNota(rs.getDouble("nota")); 
             }
         } catch (SQLException ex) {
             System.out.println(ex.toString());
@@ -106,7 +106,7 @@ public class DaoMatricula {
     public void excluir(Matricula matricula) {
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("DELETE FROM tbMatricula WHERE cpf = ? and siglaTurma = ?");
+            ps = conn.prepareStatement("DELETE FROM tbMatricula WHERE cpfAluno = ? and siglaTurma = ?");
 
             ps.setString(1, matricula.getAluno().getCpf());
             ps.setString(2, matricula.getTurma().getSiglaTurma());

@@ -33,7 +33,7 @@ public class DaoAPrazo {
         try {
             ps = conn.prepareStatement("SELECT * FROM tbAPrazo"
                     + "WHERE dataMatricula = ?,"
-                    + "and cpf = ?,"
+                    + "and cpfAluno = ?,"
                     + "and siglaTurma= ?");
             
             ps.setString(1, data);
@@ -46,9 +46,9 @@ public class DaoAPrazo {
                 p.setCpf(cpf);
                 p.setDataMatricula(data);
                 p.setSiglaTurma(siglaTurma);
-                p.setDtVencimento(rs.getString("DtVencimento"));
-                p.setQtdeMensalidade(rs.getInt("QtdeMensalidade"));
-                p.setTaxaJuros(rs.getDouble("TaxaJuros"));
+                p.setDtVencimento(rs.getString("dtVencimento"));
+                p.setQtdeMensalidade(rs.getInt("qtdeMensalidade"));
+                p.setTaxaJuros(rs.getDouble("taxaJuros"));
                 p.setValor(rs.getDouble("Valor"));
             }
         } catch (SQLException ex) {

@@ -13,7 +13,7 @@ public class AVista {
     private int agencia;
     private int nCheque;
     private String preData;
-    private String DataMatricula;
+    private String dataMatricula;
     private String cpf;
     private String siglaTurma;
     
@@ -34,7 +34,7 @@ public class AVista {
     }
 
     public void setDataMatricula(String DataMatricula) {
-        this.DataMatricula = DataMatricula;
+        this.dataMatricula = DataMatricula;
     }
 
     public void setCpf(String cpf) {
@@ -62,7 +62,7 @@ public class AVista {
     }
 
     public String getDataMatricula() {
-        return DataMatricula;
+        return dataMatricula;
     }
 
     public String getCpf() {

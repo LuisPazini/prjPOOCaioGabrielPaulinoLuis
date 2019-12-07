@@ -80,6 +80,11 @@ public class GuiTurma extends javax.swing.JFrame {
         txtSiglaTurma.setEnabled(false);
 
         cbxCurso.setEditable(true);
+        cbxCurso.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbxCursoItemStateChanged(evt);
+            }
+        });
 
         btnConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/pesq.png"))); // NOI18N
         btnConsultar.setText("Consultar");
@@ -243,8 +248,8 @@ public class GuiTurma extends javax.swing.JFrame {
 
         conexao = new Conexao("BD1913014", "BD1913014");
         conexao.setDriver("oracle.jdbc.driver.OracleDriver");
-        //conexao.setConnectionString("jdbc:oracle:thin:@localhost:1521:xe");
-        conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
+        conexao.setConnectionString("jdbc:oracle:thin:@localhost:1521:xe");
+        //conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
         daoTurma = new DaoTurma(conexao.conectar());
         daoCurso = new DaoCurso(conexao.conectar());
 
@@ -258,7 +263,7 @@ public class GuiTurma extends javax.swing.JFrame {
         }
 
         cbxCurso.setSelectedItem(null);
-        txtSiglaTurma.setEnabled(true);
+        txtSiglaTurma.setEnabled(false);
     }//GEN-LAST:event_formWindowOpened
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
@@ -423,6 +428,10 @@ public class GuiTurma extends javax.swing.JFrame {
             btnExcluir.setEnabled(false);
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void cbxCursoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxCursoItemStateChanged
+        txtSiglaTurma.setEnabled(true);
+    }//GEN-LAST:event_cbxCursoItemStateChanged
 
     /**
      * @param args the command line arguments
