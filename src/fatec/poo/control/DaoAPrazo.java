@@ -22,17 +22,76 @@ import java.sql.SQLException;
 public class DaoAPrazo {
     
     private Connection conn;
-     
+     /* private double valor;
+    private String dtVencimento;
+    private double taxaJuros;
+    private int qtdeMensalidade;
+    private String dataMatricula;
+    private String cpf;
+    private String siglaTurma; */
+    
     public DaoAPrazo(Connection conn) {
         this.conn = conn;
     }
     
+    public void inserir(APrazo aprazo) {
+        PreparedStatement ps = null;
+        try {
+            ps = conn.prepareStatement("INSERT INTO tbAPrazo("
+                    + "valor,"
+                    + "dtVencimento,"
+                    + "taxajuros,"
+                    + "qtdeMensalidade,"
+                    + "dtMatricula,"
+                    + "cpfAluno,"
+                    + "siglaturma) "
+                    + "VALUES(?,?,?,?,?,?,?)");
+            
+            ps.setDouble(1, aprazo.getValor());
+            ps.setString(2, aprazo.getDtVencimento());
+            ps.setDouble(3, aprazo.getTaxaJuros());
+            ps.setInt(4, aprazo.getQtdeMensalidade());
+            ps.setString(5, aprazo.getDataMatricula());
+            ps.setString(6, aprazo.getCpf());
+            ps.setString(7, aprazo.getSiglaTurma());
+            ps.execute();
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+        }
+    }
+    
+    public void alterar(APrazo aprazo) {
+        PreparedStatement ps = null;
+        try {
+            ps = conn.prepareStatement("UPDATE tbAPrazo SET "
+                    + "valor = ?,"
+                    + "dtVencimento = ?,"
+                    + "taxajuros = ?,"
+                    + "qtdeMensalidade = ?,"
+                    + "dtMatricula = ?,"
+                    + "cpfAluno = ?,"
+                    + "siglaTurma = ?,");
+
+            ps.setDouble(1, aprazo.getValor());
+            ps.setString(2, aprazo.getDtVencimento());
+            ps.setDouble(3, aprazo.getTaxaJuros());
+            ps.setInt(4, aprazo.getQtdeMensalidade());
+            ps.setString(5, aprazo.getDataMatricula());
+            ps.setString(6, aprazo.getCpf());
+            ps.setString(7, aprazo.getSiglaTurma());
+
+            ps.execute();
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+        }
+    }
+
     public APrazo consultar(String data, String cpf, String siglaTurma) {
         APrazo p = null;
         PreparedStatement ps = null;
         try {
             ps = conn.prepareStatement("SELECT * FROM tbAPrazo"
-                    + "WHERE dataMatricula = ?,"
+                    + "WHERE dtMatricula = ?,"
                     + "and cpfAluno = ?,"
                     + "and siglaTurma= ?");
             
@@ -55,5 +114,18 @@ public class DaoAPrazo {
             System.out.println(ex.toString());
         }
         return (p);
+    }
+    public void excluir(APrazo aprazo) {
+        PreparedStatement ps = null;
+        try {
+            ps = conn.prepareStatement("DELETE FROM tbAPrazo WHERE cpfAluno = ? and siglaTurma = ? and dtMatricula = ?");
+
+            ps.setString(1, aprazo.getCpf());
+            ps.setString(2, aprazo.getSiglaTurma());
+            ps.setString(3, aprazo.getDataMatricula());
+            ps.execute();
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+        }
     }
 }

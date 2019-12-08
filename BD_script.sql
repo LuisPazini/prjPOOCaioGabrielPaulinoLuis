@@ -17,7 +17,8 @@ create table tbTurma (
 	periodo varchar2(20),
 	qtdVagas number (3,0),
 	observacoes varchar2(200),
-	siglaCurso varchar2(8)
+	siglaCurso varchar2(8),
+	cpfInstrutor varchar2(14)
 );
 
 
@@ -97,7 +98,8 @@ create table tbAPrazo (
 alter table tbCurso add constraint pk_tbCurso primary key (sigla);
 
 
-alter table tbTurma add constraint fk_tbTurma foreign key(siglaCurso) references tbCurso (sigla);
+alter table tbTurma add constraint fk_tbTurma_tbCurso foreign key(siglaCurso) references tbCurso (sigla);
+alter table tbTurma add constraint fk_tbTurma_tbInstrutor foreign key(cpfInstrutor) references tbInstrutor (cpf);
 alter table tbTurma add constraint pk_tbTurma primary key (siglaTurma);
 
 
