@@ -85,10 +85,9 @@ public class GuiAlocarInstrutor extends javax.swing.JFrame {
                 cbxCursoItemStateChanged(evt);
             }
         });
-
-        cbxTurma.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                cbxTurmaFocusGained(evt);
+        cbxCurso.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                cbxCursoFocusLost(evt);
             }
         });
 
@@ -198,7 +197,7 @@ public class GuiAlocarInstrutor extends javax.swing.JFrame {
         }
 
         cbxCurso.setSelectedItem(null);
-        cbxTurma.setEnabled(true);
+        cbxTurma.setEnabled(false);
 
         ArrayList<String> nomeInstrutores;
         nomeInstrutores = daoInstrutor.listarInstrutores();
@@ -207,6 +206,7 @@ public class GuiAlocarInstrutor extends javax.swing.JFrame {
             cbxInstrutor.addItem(nomes);
         }
         cbxInstrutor.setSelectedItem(null);
+        cbxCurso.requestFocus(true);
 
 
     }//GEN-LAST:event_formWindowOpened
@@ -216,19 +216,8 @@ public class GuiAlocarInstrutor extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnSairActionPerformed
 
-    private void cbxTurmaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cbxTurmaFocusGained
-        cbxTurma.removeAllItems();
-        daoTurma = new DaoTurma(conexao.conectar());
-        cbxTurma.setSelectedItem(null);
-        ArrayList<String> listaTurmas;
-        listaTurmas = daoTurma.listarTurmas((String) cbxCurso.getSelectedItem());
-
-        for (String turmas : listaTurmas) {
-            cbxTurma.addItem(turmas);
-        }
-    }//GEN-LAST:event_cbxTurmaFocusGained
-
     private void cbxCursoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxCursoItemStateChanged
+        cbxTurma.setEnabled(true);
         cbxTurma.removeAllItems();
     }//GEN-LAST:event_cbxCursoItemStateChanged
 
@@ -249,6 +238,27 @@ public class GuiAlocarInstrutor extends javax.swing.JFrame {
         btnAlocar.setEnabled(false);
 
     }//GEN-LAST:event_btnAlocarActionPerformed
+
+    private void cbxCursoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cbxCursoFocusLost
+
+        if (cbxCurso.getSelectedIndex() != -1) {
+            cbxTurma.setEnabled(true);
+
+            cbxTurma.removeAllItems();
+            daoTurma = new DaoTurma(conexao.conectar());
+            cbxTurma.setSelectedItem(null);
+            ArrayList<String> listaTurmas;
+            listaTurmas = daoTurma.listarTurmas((String) cbxCurso.getSelectedItem());
+
+            for (String turmas : listaTurmas) {
+                cbxTurma.addItem(turmas);
+            }
+        }else {
+            cbxTurma.setEnabled(false);
+        }
+
+
+    }//GEN-LAST:event_cbxCursoFocusLost
 
     /**
      * @param args the command line arguments

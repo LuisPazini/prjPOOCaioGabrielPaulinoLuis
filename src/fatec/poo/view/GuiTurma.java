@@ -297,7 +297,7 @@ public class GuiTurma extends javax.swing.JFrame {
         txtQtdeVagas.setText("");
         //cbxCurso.setSelectedItem(null);//Aqui
 
-        txtSiglaTurma.setEnabled(true);
+        txtSiglaTurma.setEnabled(false);
         txtNome.setEnabled(false);
         txtDataInicio.setEnabled(false);
         txtDataTermino.setEnabled(false);
