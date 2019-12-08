@@ -31,6 +31,11 @@ public class Instrutor extends Pessoa {
         turmas.add(t);
         t.setInstrutor(this);
     }
+    
+    public void removeTurma(Turma t){
+        turmas.remove(t);
+        t.setInstrutor(null);
+    }
 
     public String getFormacao() {
         return formacao;
