@@ -540,7 +540,7 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
             aVista.setSiglaTurma(siglaTurma);
             matricula.setaVista(aVista);
             
-            //daoAVista.inserir(aVista); Apos incluir o metodo inserir
+            daoAVista.inserir(aVista);
 
         } else if (rbtAPrazo.isSelected()) {
             aPrazo = new APrazo();
@@ -579,8 +579,7 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
             aPrazo.setSiglaTurma(siglaTurma);
             matricula.setaPrazo(aPrazo);
             
-            //daoAPrazo.inserir(aPrazo); Apos incluir o metodo inserir
-
+            daoAPrazo.inserir(aPrazo);
         }
         
         daoMatricula.inserir(matricula);

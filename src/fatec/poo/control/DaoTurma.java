@@ -33,8 +33,9 @@ public class DaoTurma {
                     + "periodo,"
                     + "qtdVagas,"
                     + "observacoes,"
-                    + "siglaCurso)"
-                    + "VALUES(?,?,?,?,?,?,?,?)");
+                    + "siglaCurso,"
+                    + "cpfInstrutor)"
+                    + "VALUES(?,?,?,?,?,?,?,?,?)");
 
             ps.setString(1, turma.getSiglaTurma());
             ps.setString(2, turma.getDescricao());
@@ -44,6 +45,7 @@ public class DaoTurma {
             ps.setInt(6, turma.getQtdVagas());
             ps.setString(7, turma.getObservacoes());
             ps.setString(8, turma.getSiglaCurso());
+            ps.setString(9, turma.getCpfInstrutor());
 
             ps.execute();
         } catch (SQLException ex) {
@@ -61,7 +63,8 @@ public class DaoTurma {
                     + "periodo = ?,"
                     + "qtdVagas = ?,"
                     + "observacoes =?,"
-                    + "siglaCurso =?"
+                    + "siglaCurso =?,"
+                    + "cpfInstrutor =?"
                     + "WHERE siglaTurma = ?");
 
             ps.setString(1, turma.getDescricao());
@@ -71,7 +74,8 @@ public class DaoTurma {
             ps.setInt(5, turma.getQtdVagas());
             ps.setString(6, turma.getObservacoes());
             ps.setString(7, turma.getSiglaCurso());
-            ps.setString(8, turma.getSiglaTurma());
+            ps.setString(8, turma.getCpfInstrutor());
+            ps.setString(9, turma.getSiglaTurma());
 
             ps.execute();
         } catch (SQLException ex) {
@@ -98,6 +102,7 @@ public class DaoTurma {
                 t.setQtdVagas(rs.getInt("qtdVagas"));
                 t.setObservacoes(rs.getString("observacoes"));
                 t.setSiglaCurso(rs.getString("siglaCurso"));
+                t.setCpfInstrutor(rs.getString("cpfInstrutor"));
             }
         } catch (SQLException ex) {
             System.out.println(ex.toString());

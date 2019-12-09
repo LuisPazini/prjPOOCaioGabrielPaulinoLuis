@@ -27,7 +27,7 @@ public class APrazo {
     }
 
     public void setTaxaJuros(double taxaJuros) {
-        this.taxaJuros = taxaJuros*100;
+        this.taxaJuros = taxaJuros;
     }
 
     public void setQtdeMensalidade(int qtdeMensalidade) {

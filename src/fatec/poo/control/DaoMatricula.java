@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package fatec.poo.control;
 
 import fatec.poo.model.APrazo;
@@ -52,17 +47,17 @@ public class DaoMatricula {
         PreparedStatement ps = null;
         try {
             ps = conn.prepareStatement("UPDATE tbMAtricula SET "
-                    + "cpfAluno = ?,"
-                    + "siglaTurma = ?,"
                     + "data = ?,"
                     + "qtdeFaltas = ?,"
-                    + "nota = ?,");
+                    + "nota = ?"
+                    + "WHERE cpfAluno = ?"
+                    + "and siglaTurma = ?");
 
-            ps.setString(1, matricula.getAluno().getCpf());
-            ps.setString(2, matricula.getTurma().getSiglaTurma());
-            ps.setString(3, matricula.getData());
-            ps.setInt(4, matricula.getQtdeFaltas());
-            ps.setDouble(5, matricula.getNota());
+            ps.setString(1, matricula.getData());
+            ps.setInt(2, matricula.getQtdeFaltas());
+            ps.setDouble(3, matricula.getNota());
+            ps.setString(4, matricula.getAluno().getCpf());
+            ps.setString(5, matricula.getTurma().getSiglaTurma());
 
             ps.execute();
         } catch (SQLException ex) {

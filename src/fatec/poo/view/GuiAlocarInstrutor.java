@@ -7,6 +7,7 @@ import fatec.poo.control.DaoInstrutor;
 import fatec.poo.model.Instrutor;
 import fatec.poo.model.Turma;
 import java.util.ArrayList;
+import java.util.Set;
 
 /**
  * @author Gabriel Paulino
@@ -94,12 +95,15 @@ public class GuiAlocarInstrutor extends javax.swing.JFrame {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 cbxCursoFocusLost(evt);
             }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                cbxTurmaFocusLost(evt);
+        });
+
+        cbxInstrutor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxInstrutorActionPerformed(evt);
             }
         });
 
-        lblSituacao.setBorder(new javax.swing.border.SoftBevelBorder(1));
+        lblSituacao.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -170,6 +174,10 @@ public class GuiAlocarInstrutor extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void cbxInstrutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxInstrutorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbxInstrutorActionPerformed
+
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         conexao.fecharConexao();
         dispose();
@@ -178,11 +186,9 @@ public class GuiAlocarInstrutor extends javax.swing.JFrame {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         conexao = new Conexao("BD1913014", "BD1913014");
         conexao.setDriver("oracle.jdbc.driver.OracleDriver");
-        //conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
-        
-        //Conexão Gabriel Paulino:
         conexao.setConnectionString("jdbc:oracle:thin:@localhost:1521:xe");
-        
+        //conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
+
         btnLiberar.setEnabled(false);
 
         //daoTurma = new DaoTurma(conexao.conectar());
@@ -222,46 +228,31 @@ public class GuiAlocarInstrutor extends javax.swing.JFrame {
     }//GEN-LAST:event_cbxCursoItemStateChanged
 
     private void btnAlocarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlocarActionPerformed
-        /*daoTurma = new DaoTurma(conexao.conectar());
+        daoTurma = new DaoTurma(conexao.conectar());
         String descricao = daoTurma.consultar((String) cbxTurma.getSelectedItem()).getDescricao();
-        turma = new Turma((String) cbxTurma.getSelectedItem(), descricao);
+        //turma = new Turma((String) cbxTurma.getSelectedItem(), descricao);
+        String siglaTurma = (String) cbxTurma.getSelectedItem();
+        turma = daoTurma.consultar(siglaTurma);
+
+        daoInstrutor = new DaoInstrutor(conexao.conectar());
         String cpfInstrutor = daoInstrutor.consultarCPF((String) cbxInstrutor.getSelectedItem()).getCpf();
-        instrutor = new Instrutor((String) cbxInstrutor.getSelectedItem(), cpfInstrutor);*/
+        //instrutor = new Instrutor((String) cbxInstrutor.getSelectedItem(), cpfInstrutor);
+        instrutor = daoInstrutor.consultar(cpfInstrutor);
         
         //Não seria apenas isto?:
-        daoTurma = new DaoTurma(conexao.conectar());
+        /*daoTurma = new DaoTurma(conexao.conectar());
         turma = daoTurma.consultar((String) cbxTurma.getSelectedItem());
         daoInstrutor = new DaoInstrutor(conexao.conectar());
-        instrutor = daoInstrutor.consultar((String) cbxInstrutor.getSelectedItem());
+        instrutor = daoInstrutor.consultar((String) cbxInstrutor.getSelectedItem());*/
+        
         instrutor.addTurma(turma);
+        //daoInstrutor.alterar(instrutor);
 
         lblSituacao.setText("Alocada");
         btnLiberar.setEnabled(true);
         btnAlocar.setEnabled(false);
+
     }//GEN-LAST:event_btnAlocarActionPerformed
-
-
-    private void btnLiberarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLiberarActionPerformed
-        daoTurma = new DaoTurma(conexao.conectar());
-        turma = daoTurma.consultar((String) cbxTurma.getSelectedItem());
-        daoInstrutor = new DaoInstrutor(conexao.conectar());
-        daoInstrutor.consultar((String) cbxInstrutor.getSelectedItem()).removeTurma(turma);
-        
-        lblSituacao.setText("Liberada");
-        btnLiberar.setEnabled(false);
-        btnAlocar.setEnabled(true);
-    }//GEN-LAST:event_btnLiberarActionPerformed
-
-    private void cbxTurmaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cbxTurmaFocusLost
-        daoTurma = new DaoTurma(conexao.conectar());
-        if(daoTurma.consultar((String) cbxTurma.getSelectedItem()).getInstrutor() != null){
-            lblSituacao.setText("Alocada");
-            btnAlocar.setEnabled(false);
-            btnLiberar.setEnabled(true);
-        }else{
-            lblSituacao.setText("Liberada");
-        }
-    }//GEN-LAST:event_cbxTurmaFocusLost
 
     private void cbxCursoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cbxCursoFocusLost
 
@@ -284,6 +275,16 @@ public class GuiAlocarInstrutor extends javax.swing.JFrame {
 
     }//GEN-LAST:event_cbxCursoFocusLost
 
+    private void btnLiberarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLiberarActionPerformed
+        daoTurma = new DaoTurma(conexao.conectar());
+        turma = daoTurma.consultar((String) cbxTurma.getSelectedItem());
+        daoInstrutor = new DaoInstrutor(conexao.conectar());
+        daoInstrutor.consultar((String) cbxInstrutor.getSelectedItem()).removeTurma(turma);
+        
+        lblSituacao.setText("Liberada");
+        btnLiberar.setEnabled(false);
+        btnAlocar.setEnabled(true);
+    }//GEN-LAST:event_btnLiberarActionPerformed
 
     /**
      * @param args the command line arguments

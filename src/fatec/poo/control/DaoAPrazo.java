@@ -40,11 +40,11 @@ public class DaoAPrazo {
             ps = conn.prepareStatement("INSERT INTO tbAPrazo("
                     + "valor,"
                     + "dtVencimento,"
-                    + "taxajuros,"
+                    + "taxaJuros,"
                     + "qtdeMensalidade,"
-                    + "dtMatricula,"
+                    + "dataMatricula,"
                     + "cpfAluno,"
-                    + "siglaturma) "
+                    + "siglaTurma) "
                     + "VALUES(?,?,?,?,?,?,?)");
             
             ps.setDouble(1, aprazo.getValor());
@@ -66,11 +66,11 @@ public class DaoAPrazo {
             ps = conn.prepareStatement("UPDATE tbAPrazo SET "
                     + "valor = ?,"
                     + "dtVencimento = ?,"
-                    + "taxajuros = ?,"
-                    + "qtdeMensalidade = ?,"
-                    + "dtMatricula = ?,"
-                    + "cpfAluno = ?,"
-                    + "siglaTurma = ?,");
+                    + "taxaJuros = ?,"
+                    + "qtdeMensalidade = ?"
+                    + "WHERE dataMatricula = ?"
+                    + "and cpfAluno = ?"
+                    + "and siglaTurma = ?");
 
             ps.setDouble(1, aprazo.getValor());
             ps.setString(2, aprazo.getDtVencimento());
@@ -91,7 +91,7 @@ public class DaoAPrazo {
         PreparedStatement ps = null;
         try {
             ps = conn.prepareStatement("SELECT * FROM tbAPrazo"
-                    + "WHERE dtMatricula = ?,"
+                    + "WHERE dataMatricula = ?,"
                     + "and cpfAluno = ?,"
                     + "and siglaTurma= ?");
             
@@ -108,7 +108,7 @@ public class DaoAPrazo {
                 p.setDtVencimento(rs.getString("dtVencimento"));
                 p.setQtdeMensalidade(rs.getInt("qtdeMensalidade"));
                 p.setTaxaJuros(rs.getDouble("taxaJuros"));
-                p.setValor(rs.getDouble("Valor"));
+                p.setValor(rs.getDouble("valor"));
             }
         } catch (SQLException ex) {
             System.out.println(ex.toString());
@@ -118,7 +118,9 @@ public class DaoAPrazo {
     public void excluir(APrazo aprazo) {
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("DELETE FROM tbAPrazo WHERE cpfAluno = ? and siglaTurma = ? and dtMatricula = ?");
+            ps = conn.prepareStatement("DELETE FROM tbAPrazo WHERE cpfAluno = ? "
+                    + "and siglaTurma = ? "
+                    + "and dataMatricula = ?");
 
             ps.setString(1, aprazo.getCpf());
             ps.setString(2, aprazo.getSiglaTurma());

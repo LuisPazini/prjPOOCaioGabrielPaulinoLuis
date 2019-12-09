@@ -30,11 +30,11 @@ public class DaoAVista {
             ps = conn.prepareStatement("INSERT INTO tbAVista("
                     + "valor,"
                     + "agencia,"
-                    + "ncheque,"
+                    + "nCheque,"
                     + "preData,"
-                    + "dtMatricula,"
+                    + "dataMatricula,"
                     + "cpfAluno,"
-                    + "siglaturma) "
+                    + "siglaTurma) "
                     + "VALUES(?,?,?,?,?,?,?)");
             
             ps.setDouble(1, avista.getValor());
@@ -57,18 +57,19 @@ public class DaoAVista {
                     + "valor = ?,"
                     + "agencia = ?,"
                     + "nCheque = ?,"
-                    + "preData = ?,"
-                    + "cpfAluno = ?,"
-                    + "siglaTurma = ?,"
-                    + "dtMatricula = ?,");
+                    + "preData = ?"
+                    + "WHERE dataMatricula = ?"
+                    + "and cpfAluno = ?"
+                    + "and siglaTurma = ?");
 
             ps.setDouble(1, avista.getValor());
             ps.setInt(2, avista.getAgencia());
             ps.setInt(3, avista.getnCheque());
             ps.setString(4, avista.getPreData());
-            ps.setString(5, avista.getCpf());
-            ps.setString(6, avista.getSiglaTurma());
-            ps.setString(7, avista.getDataMatricula());
+            ps.setString(5, avista.getDataMatricula());
+            ps.setString(6, avista.getCpf());
+            ps.setString(7, avista.getSiglaTurma());
+            
 
             ps.execute();
         } catch (SQLException ex) {
@@ -81,7 +82,7 @@ public class DaoAVista {
         PreparedStatement ps = null;
         try {
             ps = conn.prepareStatement("SELECT * FROM tbAVista"
-                    + "WHERE dtMatricula = ?,"
+                    + "WHERE dataMatricula = ?,"
                     + "and cpfAluno = ?,"
                     + "and siglaTurma= ?");
             
@@ -109,7 +110,9 @@ public class DaoAVista {
     public void excluir(AVista avista) {
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("DELETE FROM tbAVista WHERE cpfAluno = ? and siglaTurma = ? and dtMatricula = ?");
+            ps = conn.prepareStatement("DELETE FROM tbAVista WHERE cpfAluno = ? "
+                    + "and siglaTurma = ? "
+                    + "and dataMatricula = ?");
 
             ps.setString(1, avista.getCpf());
             ps.setString(2, avista.getSiglaTurma());

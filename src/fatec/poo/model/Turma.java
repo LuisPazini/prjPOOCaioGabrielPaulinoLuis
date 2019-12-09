@@ -18,6 +18,7 @@ public class Turma {
     private int qtdVagas;
     private String observacoes;
     private String siglaCurso;
+    private String cpfInstrutor;
     private Instrutor instrutor;
     private ArrayList<Matricula> matriculas;
     private Curso curso;
@@ -114,4 +115,13 @@ public class Turma {
     public ArrayList<Matricula> getMatriculas() {
         return matriculas;
     }
+
+    public String getCpfInstrutor() {
+        return cpfInstrutor;
+    }
+
+    public void setCpfInstrutor(String cpfInstrutor) {
+        this.cpfInstrutor = cpfInstrutor;
+    }
+    
 }
