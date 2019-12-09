@@ -246,7 +246,7 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
         }
         txtCPFAluno.setEnabled(false);
 
-        lblValor.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        lblValor.setBorder(new javax.swing.border.SoftBevelBorder(1));
 
         cbxCurso.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -259,8 +259,13 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
                 cbxTurmaItemStateChanged(evt);
             }
         });
+        cbxTurma.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                cbxTurmaFocusLost(evt);
+            }
+        });
 
-        lblNomeAluno.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        lblNomeAluno.setBorder(new javax.swing.border.SoftBevelBorder(1));
 
         txtDataMatricula.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.MEDIUM))));
 
@@ -449,11 +454,9 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
         txtQtdeMensalidade.setEnabled(true);
         txtTaxaJuros.setEnabled(true);
         txtDtVencimento.setEnabled(true);
-
     }//GEN-LAST:event_rbtAPrazoActionPerformed
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
-        matricula = null;
         matricula = daoMatricula.consultar(txtCPFAluno.getText(), (String) cbxTurma.getSelectedItem());
 
         if (pessoa.validarCPF(txtCPFAluno.getText()) == true) {
@@ -483,7 +486,6 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
                 txtCPFAluno.setText(matricula.getAluno().getCpf());
                 lblNomeAluno.setText(matricula.getAluno().getNome());
             }
-
         }
     }//GEN-LAST:event_btnConsultarActionPerformed
 
@@ -609,6 +611,12 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
         btnConsultar.setEnabled(true);
         btnInserir.setEnabled(false);
     }//GEN-LAST:event_btnInserirActionPerformed
+
+    private void cbxTurmaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cbxTurmaFocusLost
+        if (cbxTurma.getSelectedIndex() != -1) {
+            txtCPFAluno.setEnabled(true);
+        }
+    }//GEN-LAST:event_cbxTurmaFocusLost
 
     /**
      * @param args the command line arguments
