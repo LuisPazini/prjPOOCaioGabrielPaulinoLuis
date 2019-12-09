@@ -248,8 +248,8 @@ public class GuiTurma extends javax.swing.JFrame {
 
         conexao = new Conexao("BD1913014", "BD1913014");
         conexao.setDriver("oracle.jdbc.driver.OracleDriver");
-        conexao.setConnectionString("jdbc:oracle:thin:@localhost:1521:xe");
-        //conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
+        //conexao.setConnectionString("jdbc:oracle:thin:@localhost:1521:xe");
+        conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
         daoTurma = new DaoTurma(conexao.conectar());
         daoCurso = new DaoCurso(conexao.conectar());
 
@@ -276,7 +276,10 @@ public class GuiTurma extends javax.swing.JFrame {
         turma.setDataInicio(txtDataInicio.getText());
         turma.setDataTermino(txtDataTermino.getText());
         turma.setPeriodo((String) cbxPeriodo.getSelectedItem());
-        turma.setSiglaCurso((String) cbxCurso.getSelectedItem());//Aqui
+
+        curso = daoCurso.consultar((String) cbxCurso.getSelectedItem());
+        turma.setCurso(curso);
+        //turma.setSiglaCurso((String) cbxCurso.getSelectedItem());//Aqui
 
         /*Tratamento de erros de Conversao de String vazia*/
         try {
@@ -337,7 +340,8 @@ public class GuiTurma extends javax.swing.JFrame {
             txtDataTermino.setText(turma.getDataTermino());
             cbxPeriodo.setSelectedItem(turma.getPeriodo());
             txtQtdeVagas.setText(Integer.toString(turma.getQtdVagas()));
-            cbxCurso.setSelectedItem(turma.getSiglaCurso());//Aqui
+            cbxCurso.setSelectedItem(turma.getCurso().getSigla());//Aqui
+            //cbxCurso.setSelectedItem(turma.getSiglaCurso());//Aqui
 
             txtSiglaTurma.setEnabled(false);
             txtNome.setEnabled(true);
@@ -362,7 +366,9 @@ public class GuiTurma extends javax.swing.JFrame {
             turma.setDataInicio(txtDataInicio.getText());
             turma.setDataTermino(txtDataTermino.getText());
             turma.setPeriodo((String) cbxPeriodo.getSelectedItem());
-            turma.setSiglaCurso((String) cbxCurso.getSelectedItem());//Aqui
+            curso = daoCurso.consultar((String) cbxCurso.getSelectedItem());
+            turma.setCurso(curso);
+            //turma.setSiglaCurso((String) cbxCurso.getSelectedItem());//Aqui
 
             /*Tratamento de erros de Conversao de String vazia*/
             try {
@@ -495,5 +501,6 @@ public class GuiTurma extends javax.swing.JFrame {
     private DaoTurma daoTurma = null;
     private DaoCurso daoCurso = null;
     private Turma turma = null;
+    private Curso curso = null;
     private Conexao conexao = null;
 }

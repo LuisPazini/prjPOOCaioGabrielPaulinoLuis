@@ -98,12 +98,13 @@ create table tbAPrazo (
 alter table tbCurso add constraint pk_tbCurso primary key (sigla);
 
 
+alter table tbInstrutor add constraint pk_tbInstrutor primary key (cpf);
+
+
 alter table tbTurma add constraint fk_tbTurma_tbCurso foreign key(siglaCurso) references tbCurso (sigla);
 alter table tbTurma add constraint fk_tbTurma_tbInstrutor foreign key(cpfInstrutor) references tbInstrutor (cpf);
 alter table tbTurma add constraint pk_tbTurma primary key (siglaTurma);
 
-
-alter table tbInstrutor add constraint pk_tbInstrutor primary key (cpf);
 
 alter table tbAluno add constraint pk_tbAluno primary key (cpf);
 

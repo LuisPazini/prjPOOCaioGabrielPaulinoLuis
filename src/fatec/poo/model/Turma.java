@@ -17,8 +17,8 @@ public class Turma {
     private String periodo;
     private int qtdVagas;
     private String observacoes;
-    private String siglaCurso;
-    private String cpfInstrutor;
+    //private String siglaCurso;
+    //private String cpfInstrutor;
     private Instrutor instrutor;
     private ArrayList<Matricula> matriculas;
     private Curso curso;
@@ -53,9 +53,9 @@ public class Turma {
         this.observacoes = observacoes;
     }
     
-    public void setSiglaCurso(String siglaCurso) {
+    /*public void setSiglaCurso(String siglaCurso) {
         this.siglaCurso = siglaCurso;
-    }
+    }*/
     
     public Instrutor getInstrutor(){
         return instrutor;
@@ -108,20 +108,20 @@ public class Turma {
         return observacoes;
     }
     
-    public String getSiglaCurso() {
+    /*public String getSiglaCurso() {
         return siglaCurso;
-    }
+    }*/
 
     public ArrayList<Matricula> getMatriculas() {
         return matriculas;
     }
 
-    public String getCpfInstrutor() {
+    /*public String getCpfInstrutor() {
         return cpfInstrutor;
     }
 
     public void setCpfInstrutor(String cpfInstrutor) {
         this.cpfInstrutor = cpfInstrutor;
-    }
+    }*/
     
 }

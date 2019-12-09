@@ -186,12 +186,12 @@ public class GuiAlocarInstrutor extends javax.swing.JFrame {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         conexao = new Conexao("BD1913014", "BD1913014");
         conexao.setDriver("oracle.jdbc.driver.OracleDriver");
-        conexao.setConnectionString("jdbc:oracle:thin:@localhost:1521:xe");
-        //conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
+        //conexao.setConnectionString("jdbc:oracle:thin:@localhost:1521:xe");
+        conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
 
         btnLiberar.setEnabled(false);
 
-        //daoTurma = new DaoTurma(conexao.conectar());
+        daoTurma = new DaoTurma(conexao.conectar());
         daoCurso = new DaoCurso(conexao.conectar());
         daoInstrutor = new DaoInstrutor(conexao.conectar());
 
@@ -228,25 +228,17 @@ public class GuiAlocarInstrutor extends javax.swing.JFrame {
     }//GEN-LAST:event_cbxCursoItemStateChanged
 
     private void btnAlocarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlocarActionPerformed
-        daoTurma = new DaoTurma(conexao.conectar());
-        String descricao = daoTurma.consultar((String) cbxTurma.getSelectedItem()).getDescricao();
-        //turma = new Turma((String) cbxTurma.getSelectedItem(), descricao);
+
         String siglaTurma = (String) cbxTurma.getSelectedItem();
+        /*Linha abaixo: Gambiarra */
+        String cpfInstrutor = daoInstrutor.consultarCPF((String) cbxInstrutor.getSelectedItem()).getCpf();
         turma = daoTurma.consultar(siglaTurma);
 
-        daoInstrutor = new DaoInstrutor(conexao.conectar());
-        String cpfInstrutor = daoInstrutor.consultarCPF((String) cbxInstrutor.getSelectedItem()).getCpf();
-        //instrutor = new Instrutor((String) cbxInstrutor.getSelectedItem(), cpfInstrutor);
         instrutor = daoInstrutor.consultar(cpfInstrutor);
-        
-        //Não seria apenas isto?:
-        /*daoTurma = new DaoTurma(conexao.conectar());
-        turma = daoTurma.consultar((String) cbxTurma.getSelectedItem());
-        daoInstrutor = new DaoInstrutor(conexao.conectar());
-        instrutor = daoInstrutor.consultar((String) cbxInstrutor.getSelectedItem());*/
-        
+        turma.setInstrutor(instrutor);
+        daoTurma.alocarInstrutor(turma);
+
         instrutor.addTurma(turma);
-        //daoInstrutor.alterar(instrutor);
 
         lblSituacao.setText("Alocada");
         btnLiberar.setEnabled(true);
@@ -262,13 +254,21 @@ public class GuiAlocarInstrutor extends javax.swing.JFrame {
             cbxTurma.removeAllItems();
             daoTurma = new DaoTurma(conexao.conectar());
             cbxTurma.setSelectedItem(null);
-            ArrayList<String> listaTurmas;
+            /*ArrayList<String> listaTurmas;
             listaTurmas = daoTurma.listarTurmas((String) cbxCurso.getSelectedItem());
 
             for (String turmas : listaTurmas) {
                 cbxTurma.addItem(turmas);
+            }*/
+
+            ArrayList<Turma> listaTurmas;
+            listaTurmas = daoTurma.listarTurma((String) cbxCurso.getSelectedItem());
+
+            for (Turma turmas : listaTurmas) {
+                cbxTurma.addItem(turmas.getSiglaTurma());
             }
-        }else {
+
+        } else {
             cbxTurma.setEnabled(false);
         }
 
@@ -276,11 +276,9 @@ public class GuiAlocarInstrutor extends javax.swing.JFrame {
     }//GEN-LAST:event_cbxCursoFocusLost
 
     private void btnLiberarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLiberarActionPerformed
-        daoTurma = new DaoTurma(conexao.conectar());
         turma = daoTurma.consultar((String) cbxTurma.getSelectedItem());
-        daoInstrutor = new DaoInstrutor(conexao.conectar());
         daoInstrutor.consultar((String) cbxInstrutor.getSelectedItem()).removeTurma(turma);
-        
+
         lblSituacao.setText("Liberada");
         btnLiberar.setEnabled(false);
         btnAlocar.setEnabled(true);
