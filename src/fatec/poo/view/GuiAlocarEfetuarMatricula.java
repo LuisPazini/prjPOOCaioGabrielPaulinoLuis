@@ -16,6 +16,7 @@ import fatec.poo.model.Matricula;
 import fatec.poo.model.Turma;
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  * @author Gabriel Paulino
@@ -219,12 +220,15 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
 
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Eraser.png"))); // NOI18N
         btnExcluir.setText("Excluir");
+        btnExcluir.setEnabled(false);
 
         btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Alterar.png"))); // NOI18N
         btnAlterar.setText("Alterar");
+        btnAlterar.setEnabled(false);
 
         btnInserir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/add.png"))); // NOI18N
         btnInserir.setText("Inserir");
+        btnInserir.setEnabled(false);
         btnInserir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnInserirActionPerformed(evt);
@@ -246,7 +250,7 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
         }
         txtCPFAluno.setEnabled(false);
 
-        lblValor.setBorder(new javax.swing.border.SoftBevelBorder(1));
+        lblValor.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
 
         cbxCurso.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -265,7 +269,7 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
             }
         });
 
-        lblNomeAluno.setBorder(new javax.swing.border.SoftBevelBorder(1));
+        lblNomeAluno.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
 
         txtDataMatricula.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.MEDIUM))));
 
@@ -371,8 +375,8 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         conexao = new Conexao("BD1913014", "BD1913014");
         conexao.setDriver("oracle.jdbc.driver.OracleDriver");
-        //conexao.setConnectionString("jdbc:oracle:thin:@localhost:1521:xe");
-        conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
+        conexao.setConnectionString("jdbc:oracle:thin:@localhost:1521:xe");
+        //conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
 
         daoCurso = new DaoCurso(conexao.conectar());
         daoTurma = new DaoTurma(conexao.conectar());
@@ -423,7 +427,7 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
         for (String turmas : listaTurmas) {
             cbxTurma.addItem(turmas);
         }*/
-        
+
         ArrayList<Turma> listaTurmas;
         listaTurmas = daoTurma.listarTurma((String) cbxCurso.getSelectedItem());
 
@@ -431,6 +435,7 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
             cbxTurma.addItem(turmas.getSiglaTurma());
         }
         cbxTurma.setSelectedIndex(-1);
+        txtCPFAluno.setText("");
     }//GEN-LAST:event_cbxCursoItemStateChanged
 
     private void cbxTurmaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxTurmaItemStateChanged
@@ -439,11 +444,13 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
             txtCPFAluno.setEnabled(false);
             rbtAVista.setEnabled(false);
             rbtAPrazo.setEnabled(false);
+            txtCPFAluno.setText("");
         } else {
             txtCPFAluno.setEnabled(true);
             txtCPFAluno.requestFocus();
             rbtAVista.setEnabled(true);
             rbtAPrazo.setEnabled(true);
+            txtCPFAluno.setText("");
         }
     }//GEN-LAST:event_cbxTurmaItemStateChanged
 
@@ -466,47 +473,85 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
     }//GEN-LAST:event_rbtAPrazoActionPerformed
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+        matricula = null;
+        aluno = null;
         matricula = daoMatricula.consultar(txtCPFAluno.getText(), (String) cbxTurma.getSelectedItem());
+        aluno = daoAluno.consultar(txtCPFAluno.getText());
 
         if (pessoa.validarCPF(txtCPFAluno.getText()) == true) {
             //CPF válido
             txtCPFAluno.requestFocus();
-            lblNomeAluno.setText(daoAluno.consultar(txtCPFAluno.getText()).getNome());
 
-            if (matricula == null) {
-                cbxCurso.setEnabled(false);
-                cbxTurma.setEnabled(false);
-                txtCPFAluno.setEnabled(false);
-                txtDataMatricula.setEnabled(true);
-                txtDataMatricula.requestFocus();
+            if (aluno == null) {
+                JOptionPane.showMessageDialog(null, "Aluno não cadastrado", "ERRO", JOptionPane.ERROR_MESSAGE);
+                cbxCurso.setEnabled(true);
+                cbxCurso.setSelectedIndex(-1);
+                txtCPFAluno.setText("");
+                txtAgencia.setText("");
+                txtNCheque.setText("");
+                txtPreData.setText("");
+                txtQtdeMensalidade.setText("");
+                txtTaxaJuros.setText("");
+                txtDtVencimento.setText("");
 
-                btnConsultar.setEnabled(false);
-                btnInserir.setEnabled(true);
+                btnConsultar.setEnabled(true);
+                btnInserir.setEnabled(false);
                 btnAlterar.setEnabled(false);
                 btnExcluir.setEnabled(false);
 
             } else {
-                cbxCurso.removeAllItems();
-                cbxTurma.removeAllItems();
-                //cbxCurso.setSelectedItem(matricula.getTurma().getSiglaCurso());
-                cbxCurso.setSelectedItem(matricula.getTurma().getCurso().getSigla());
-                cbxTurma.setSelectedItem(matricula.getTurma().getSiglaTurma());
-                txtDataMatricula.setText(matricula.getData());
-                lblValor.setText(Double.toString(matricula.getTurma().getCurso().getValor()));
-                txtCPFAluno.setText(matricula.getAluno().getCpf());
-                lblNomeAluno.setText(matricula.getAluno().getNome());
+                lblNomeAluno.setText(daoAluno.consultar(txtCPFAluno.getText()).getNome());
+                if (matricula == null) {
+                    cbxCurso.setEnabled(false);
+                    cbxTurma.setEnabled(false);
+                    txtCPFAluno.setEnabled(false);
+                    txtDataMatricula.setEnabled(true);
+                    txtDataMatricula.requestFocus();
+
+                    btnConsultar.setEnabled(false);
+                    btnInserir.setEnabled(true);
+                    btnAlterar.setEnabled(false);
+                    btnExcluir.setEnabled(false);
+
+                } else {
+                    cbxCurso.removeAllItems();
+                    cbxTurma.removeAllItems();
+                    cbxCurso.setSelectedItem(matricula.getTurma().getCurso().getSigla());
+                    cbxTurma.setSelectedItem(matricula.getTurma().getSiglaTurma());
+                    txtDataMatricula.setText(matricula.getData());
+                    lblValor.setText(Double.toString(matricula.getTurma().getCurso().getValor()));
+                    txtCPFAluno.setText(matricula.getAluno().getCpf());
+                    lblNomeAluno.setText(matricula.getAluno().getNome());
+
+                    cbxCurso.setEnabled(false);
+                    cbxTurma.setEnabled(false);
+                    txtCPFAluno.setEnabled(false);
+                    txtDataMatricula.setEnabled(true);
+                    txtDataMatricula.requestFocus();
+
+                    btnConsultar.setEnabled(false);
+                    btnInserir.setEnabled(false);
+                    btnAlterar.setEnabled(true);
+                    btnExcluir.setEnabled(true);
+                }
             }
+
+        } else {
+            //CPF inválido
+            JOptionPane.showMessageDialog(null, "CPF inválido", "ERRO", JOptionPane.ERROR_MESSAGE);
+            txtDataMatricula.setText("");
+            txtDataMatricula.requestFocus();
         }
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
 
         aluno = null;
-        
+
         String dataMatricula = txtDataMatricula.getText();
         String cpfAluno = txtCPFAluno.getText();
         String siglaTurma = (String) cbxTurma.getSelectedItem();
-        
+
         aluno = daoAluno.consultar(cpfAluno);
         turma = new Turma(siglaTurma, daoTurma.consultar(siglaTurma).getDescricao());
         matricula = new Matricula(dataMatricula);
@@ -549,7 +594,7 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
             aVista.setPreData(txtPreData.getText());
             aVista.setSiglaTurma(siglaTurma);
             matricula.setaVista(aVista);
-            
+
             daoAVista.inserir(aVista);
 
         } else if (rbtAPrazo.isSelected()) {
@@ -588,12 +633,12 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
             aPrazo.setDtVencimento(txtDtVencimento.getText());
             aPrazo.setSiglaTurma(siglaTurma);
             matricula.setaPrazo(aPrazo);
-            
+
             daoAPrazo.inserir(aPrazo);
         }
-        
+
         daoMatricula.inserir(matricula);
-        
+
         txtDataMatricula.setText("");
         cbxCurso.setSelectedIndex(-1);
         cbxTurma.setSelectedIndex(-1);
@@ -604,8 +649,7 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
         txtQtdeMensalidade.setText("");
         txtTaxaJuros.setText("");
         txtDtVencimento.setText("");
-        
-        
+
         txtDataMatricula.setEnabled(true);
         txtCPFAluno.setEnabled(false);
         txtAgencia.setEnabled(false);
@@ -614,9 +658,9 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
         txtQtdeMensalidade.setEnabled(false);
         txtTaxaJuros.setEnabled(false);
         txtDtVencimento.setEnabled(false);
-        
+
         txtDataMatricula.requestFocus();
-        
+
         btnConsultar.setEnabled(true);
         btnInserir.setEnabled(false);
     }//GEN-LAST:event_btnInserirActionPerformed
@@ -624,6 +668,7 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
     private void cbxTurmaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cbxTurmaFocusLost
         if (cbxTurma.getSelectedIndex() != -1) {
             txtCPFAluno.setEnabled(true);
+            txtCPFAluno.setText("");
         }
     }//GEN-LAST:event_cbxTurmaFocusLost
 

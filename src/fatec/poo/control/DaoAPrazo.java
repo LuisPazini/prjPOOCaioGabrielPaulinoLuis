@@ -22,13 +22,6 @@ import java.sql.SQLException;
 public class DaoAPrazo {
     
     private Connection conn;
-     /* private double valor;
-    private String dtVencimento;
-    private double taxaJuros;
-    private int qtdeMensalidade;
-    private String dataMatricula;
-    private String cpf;
-    private String siglaTurma; */
     
     public DaoAPrazo(Connection conn) {
         this.conn = conn;

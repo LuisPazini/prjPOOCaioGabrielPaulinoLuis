@@ -7,7 +7,6 @@ import fatec.poo.control.DaoInstrutor;
 import fatec.poo.model.Instrutor;
 import fatec.poo.model.Turma;
 import java.util.ArrayList;
-import java.util.Set;
 
 /**
  * @author Gabriel Paulino
@@ -97,12 +96,6 @@ public class GuiAlocarInstrutor extends javax.swing.JFrame {
             }
         });
 
-        cbxInstrutor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbxInstrutorActionPerformed(evt);
-            }
-        });
-
         lblSituacao.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -174,10 +167,6 @@ public class GuiAlocarInstrutor extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cbxInstrutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxInstrutorActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbxInstrutorActionPerformed
-
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         conexao.fecharConexao();
         dispose();
@@ -186,10 +175,10 @@ public class GuiAlocarInstrutor extends javax.swing.JFrame {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         conexao = new Conexao("BD1913014", "BD1913014");
         conexao.setDriver("oracle.jdbc.driver.OracleDriver");
-        //conexao.setConnectionString("jdbc:oracle:thin:@localhost:1521:xe");
-        conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
+        conexao.setConnectionString("jdbc:oracle:thin:@localhost:1521:xe");
+        //conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
 
-        btnLiberar.setEnabled(false);
+        btnLiberar.setEnabled(true);
 
         daoTurma = new DaoTurma(conexao.conectar());
         daoCurso = new DaoCurso(conexao.conectar());
@@ -225,14 +214,17 @@ public class GuiAlocarInstrutor extends javax.swing.JFrame {
     private void cbxCursoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxCursoItemStateChanged
         cbxTurma.setEnabled(true);
         cbxTurma.removeAllItems();
+        lblSituacao.setText("");
+        cbxInstrutor.setSelectedIndex(-1);
+        btnAlocar.setEnabled(true);
+        btnLiberar.setEnabled(true);
+        
     }//GEN-LAST:event_cbxCursoItemStateChanged
 
     private void btnAlocarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlocarActionPerformed
 
-        String siglaTurma = (String) cbxTurma.getSelectedItem();
-        /*Linha abaixo: Gambiarra */
         String cpfInstrutor = daoInstrutor.consultarCPF((String) cbxInstrutor.getSelectedItem()).getCpf();
-        turma = daoTurma.consultar(siglaTurma);
+        turma = daoTurma.consultar((String) cbxTurma.getSelectedItem());
 
         instrutor = daoInstrutor.consultar(cpfInstrutor);
         turma.setInstrutor(instrutor);
@@ -254,12 +246,6 @@ public class GuiAlocarInstrutor extends javax.swing.JFrame {
             cbxTurma.removeAllItems();
             daoTurma = new DaoTurma(conexao.conectar());
             cbxTurma.setSelectedItem(null);
-            /*ArrayList<String> listaTurmas;
-            listaTurmas = daoTurma.listarTurmas((String) cbxCurso.getSelectedItem());
-
-            for (String turmas : listaTurmas) {
-                cbxTurma.addItem(turmas);
-            }*/
 
             ArrayList<Turma> listaTurmas;
             listaTurmas = daoTurma.listarTurma((String) cbxCurso.getSelectedItem());
@@ -267,21 +253,27 @@ public class GuiAlocarInstrutor extends javax.swing.JFrame {
             for (Turma turmas : listaTurmas) {
                 cbxTurma.addItem(turmas.getSiglaTurma());
             }
-
         } else {
             cbxTurma.setEnabled(false);
         }
 
-
     }//GEN-LAST:event_cbxCursoFocusLost
 
     private void btnLiberarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLiberarActionPerformed
+        
+        String cpfInstrutor = daoInstrutor.consultarCPF((String) cbxInstrutor.getSelectedItem()).getCpf();
         turma = daoTurma.consultar((String) cbxTurma.getSelectedItem());
-        daoInstrutor.consultar((String) cbxInstrutor.getSelectedItem()).removeTurma(turma);
+
+        instrutor = daoInstrutor.consultar(cpfInstrutor);
+        turma.setInstrutor(instrutor);
+        daoTurma.liberarInstrutor(turma);
+
+        instrutor.removeTurma(turma);
 
         lblSituacao.setText("Liberada");
         btnLiberar.setEnabled(false);
         btnAlocar.setEnabled(true);
+
     }//GEN-LAST:event_btnLiberarActionPerformed
 
     /**

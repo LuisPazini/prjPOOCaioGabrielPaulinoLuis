@@ -111,8 +111,6 @@ public class DaoTurma {
                 t.setPeriodo(rs.getString("periodo"));
                 t.setQtdVagas(rs.getInt("qtdVagas"));
                 t.setObservacoes(rs.getString("observacoes"));
-                //t.setSiglaCurso(rs.getString("siglaCurso"));
-                //t.setCpfInstrutor(rs.getString("cpfInstrutor"));
             }
         } catch (SQLException ex) {
             System.out.println(ex.toString());
@@ -207,25 +205,26 @@ public class DaoTurma {
         PreparedStatement ps = null;
         try {
             ps = conn.prepareStatement("UPDATE tbTurma SET "
-                    + "descricao = ?,"
-                    + "dataInicio = ?,"
-                    + "dataTermino = ?,"
-                    + "periodo = ?,"
-                    + "qtdVagas = ?,"
-                    + "observacoes =?,"
-                    + "siglaCurso =?,"
-		    + "cpfInstrutor =?"
+		    + "cpfInstrutor = ? "
                     + "WHERE siglaTurma = ?");
 
-            ps.setString(1, turma.getDescricao());
-            ps.setString(2, turma.getDataInicio());
-            ps.setString(3, turma.getDataTermino());
-            ps.setString(4, turma.getPeriodo());
-            ps.setInt(5, turma.getQtdVagas());
-            ps.setString(6, turma.getObservacoes());
-            ps.setString(7, turma.getCurso().getSigla());
-            ps.setString(8, turma.getInstrutor().getCpf());
-            ps.setString(9, turma.getSiglaTurma());
+            ps.setString(1, turma.getInstrutor().getCpf());
+            ps.setString(2, turma.getSiglaTurma());
+
+            ps.execute();
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+        }
+    }
+    
+    public void liberarInstrutor(Turma turma) {
+        PreparedStatement ps = null;
+        try {
+            ps = conn.prepareStatement("UPDATE tbTurma SET"
+                    + " cpfInstrutor = '' "
+                    + "WHERE siglaTurma = ?");
+
+            ps.setString(1, turma.getSiglaTurma());
 
             ps.execute();
         } catch (SQLException ex) {

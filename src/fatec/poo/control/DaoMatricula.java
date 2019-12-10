@@ -43,6 +43,7 @@ public class DaoMatricula {
             System.out.println(ex.toString());
         }
     }
+    
     public void alterar(Matricula matricula) {
         PreparedStatement ps = null;
         try {
