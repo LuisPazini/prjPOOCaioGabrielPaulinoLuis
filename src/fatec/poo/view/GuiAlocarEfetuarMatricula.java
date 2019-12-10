@@ -11,7 +11,6 @@ import fatec.poo.control.DaoAluno;
 import fatec.poo.model.APrazo;
 import fatec.poo.model.AVista;
 import fatec.poo.model.Aluno;
-import fatec.poo.model.Pessoa;
 import fatec.poo.model.Matricula;
 import fatec.poo.model.Turma;
 
@@ -385,8 +384,8 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         conexao = new Conexao("BD1913014", "BD1913014");
         conexao.setDriver("oracle.jdbc.driver.OracleDriver");
-        conexao.setConnectionString("jdbc:oracle:thin:@localhost:1521:xe");
-        //conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
+        //conexao.setConnectionString("jdbc:oracle:thin:@localhost:1521:xe");
+        conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
 
         daoCurso = new DaoCurso(conexao.conectar());
         daoTurma = new DaoTurma(conexao.conectar());
@@ -430,13 +429,6 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
 
         daoTurma = new DaoTurma(conexao.conectar());
         cbxTurma.setSelectedItem(null);
-        /*
-        ArrayList<String> listaTurmas;
-        listaTurmas = daoTurma.listarTurmas((String) cbxCurso.getSelectedItem());
-
-        for (String turmas : listaTurmas) {
-            cbxTurma.addItem(turmas);
-        }*/
 
         ArrayList<Turma> listaTurmas;
         listaTurmas = daoTurma.listarTurma((String) cbxCurso.getSelectedItem());
@@ -485,10 +477,13 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
         matricula = null;
         aluno = null;
-        matricula = daoMatricula.consultar(txtCPFAluno.getText(), (String) cbxTurma.getSelectedItem());
-        aluno = daoAluno.consultar(txtCPFAluno.getText());
 
-        if (pessoa.validarCPF(txtCPFAluno.getText()) == true) {
+        String cpfAluno = txtCPFAluno.getText();
+        String siglaTurma = (String) cbxTurma.getSelectedItem();
+
+        aluno = daoAluno.consultar(cpfAluno);
+
+        if (aluno.validarCPF(cpfAluno) == true) { //pessoa.validarCPF(cpfAluno)
             //CPF válido
             txtCPFAluno.requestFocus();
 
@@ -510,7 +505,10 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
                 btnExcluir.setEnabled(false);
 
             } else {
-                lblNomeAluno.setText(daoAluno.consultar(txtCPFAluno.getText()).getNome());
+                //Aluno cadastrado e cpf valido
+                lblNomeAluno.setText(daoAluno.consultar(cpfAluno).getNome());
+                matricula = daoMatricula.consultar(cpfAluno, siglaTurma);
+
                 if (matricula == null) {
                     cbxCurso.setEnabled(false);
                     cbxTurma.setEnabled(false);
@@ -539,6 +537,35 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
                     txtDataMatricula.setEnabled(true);
                     txtDataMatricula.requestFocus();
 
+                    //Obter o objeto de pagamento
+                    aVista = daoAVista.consultar(matricula.getData(), matricula.getAluno().getCpf(), matricula.getTurma().getSiglaTurma());
+                    aPrazo = daoAPrazo.consultar(matricula.getData(), matricula.getAluno().getCpf(), matricula.getTurma().getSiglaTurma());
+
+                    if (aVista == null) {
+                        //Eh a prazo
+                        txtAgencia.setEnabled(false);
+                        txtNCheque.setEnabled(false);
+                        txtPreData.setEnabled(false);
+                        txtQtdeMensalidade.setEnabled(true);
+                        txtTaxaJuros.setEnabled(true);
+                        txtDtVencimento.setEnabled(true);
+                        txtQtdeMensalidade.setText(Integer.toString(aPrazo.getQtdeMensalidade()));
+                        txtTaxaJuros.setText(Double.toString(aPrazo.getTaxaJuros()));
+                        txtDtVencimento.setText(aPrazo.getDtVencimento());
+
+                    } else if (aPrazo == null) {
+                        //Eh a vista
+                        txtAgencia.setEnabled(true);
+                        txtNCheque.setEnabled(true);
+                        txtPreData.setEnabled(true);
+                        txtQtdeMensalidade.setEnabled(false);
+                        txtTaxaJuros.setEnabled(false);
+                        txtDtVencimento.setEnabled(false);
+                        txtAgencia.setText(Integer.toString(aVista.getAgencia()));
+                        txtNCheque.setText(Integer.toString(aVista.getnCheque()));
+                        txtPreData.setText(aVista.getPreData());
+                    }
+
                     btnConsultar.setEnabled(false);
                     btnInserir.setEnabled(false);
                     btnAlterar.setEnabled(true);
@@ -550,6 +577,14 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
             //CPF inválido
             JOptionPane.showMessageDialog(null, "CPF inválido", "ERRO", JOptionPane.ERROR_MESSAGE);
             txtDataMatricula.setText("");
+            cbxCurso.setSelectedIndex(-1);
+            txtCPFAluno.setText("");
+            txtAgencia.setText("");
+            txtNCheque.setText("");
+            txtPreData.setText("");
+            txtQtdeMensalidade.setText("");
+            txtTaxaJuros.setText("");
+            txtDtVencimento.setText("");
             txtDataMatricula.requestFocus();
         }
     }//GEN-LAST:event_btnConsultarActionPerformed
@@ -557,13 +592,15 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
     private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
 
         aluno = null;
+        turma = null;
 
         String dataMatricula = txtDataMatricula.getText();
         String cpfAluno = txtCPFAluno.getText();
         String siglaTurma = (String) cbxTurma.getSelectedItem();
 
         aluno = daoAluno.consultar(cpfAluno);
-        turma = new Turma(siglaTurma, daoTurma.consultar(siglaTurma).getDescricao());
+        turma = daoTurma.consultar(siglaTurma);
+
         matricula = new Matricula(dataMatricula);
         matricula.setAluno(aluno);
         matricula.setTurma(turma);
@@ -655,10 +692,9 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
         txtDtVencimento.setText("");
 
         cbxCurso.setEnabled(true);
-        cbxTurma.setEnabled(true);
-        txtCPFAluno.setEnabled(true);
-        txtDataMatricula.setEnabled(false);
-        cbxCurso.requestFocus();
+        //cbxTurma.setEnabled(true);
+        //txtCPFAluno.setEnabled(true);
+        txtDataMatricula.setEnabled(true);
         txtAgencia.setEnabled(false);
         txtNCheque.setEnabled(false);
         txtPreData.setEnabled(false);
@@ -687,7 +723,11 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
             String cpfAluno = txtCPFAluno.getText();
             String siglaTurma = (String) cbxTurma.getSelectedItem();
 
-            matricula = daoMatricula.consultar(cpfAluno, siglaTurma);
+            aluno = daoAluno.consultar(cpfAluno);
+            turma = daoTurma.consultar(siglaTurma);
+
+            matricula.setAluno(aluno);
+            matricula.setTurma(turma);
 
             if (rbtAVista.isSelected()) {
                 aVista = daoAVista.consultar(dataMatricula, cpfAluno, siglaTurma);
@@ -721,9 +761,8 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
                 aVista.setDataMatricula(dataMatricula);
                 aVista.setPreData(txtPreData.getText());
                 aVista.setSiglaTurma(siglaTurma);
-                matricula.setaVista(aVista);
-
                 daoAVista.alterar(aVista);
+                matricula.setaVista(aVista);
 
             } else if (rbtAPrazo.isSelected()) {
                 aPrazo = daoAPrazo.consultar(dataMatricula, cpfAluno, siglaTurma);
@@ -757,15 +796,12 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
                 aPrazo.setDataMatricula(dataMatricula);
                 aPrazo.setDtVencimento(txtDtVencimento.getText());
                 aPrazo.setSiglaTurma(siglaTurma);
-                matricula.setaPrazo(aPrazo);
-
                 daoAPrazo.alterar(aPrazo);
+                matricula.setaPrazo(aPrazo);
             }
             daoMatricula.alterar(matricula);
-
         }
 
-        //
         txtDataMatricula.setText("");
         cbxCurso.setSelectedIndex(-1);
         cbxTurma.setSelectedIndex(-1);
@@ -778,16 +814,17 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
         txtDtVencimento.setText("");
 
         cbxCurso.setEnabled(true);
-        cbxTurma.setEnabled(true);
-        txtCPFAluno.setEnabled(true);
+        //cbxTurma.setEnabled(true);
+        //txtCPFAluno.setEnabled(true);
         txtDataMatricula.setEnabled(false);
-        cbxCurso.requestFocus();
         txtAgencia.setEnabled(false);
         txtNCheque.setEnabled(false);
         txtPreData.setEnabled(false);
         txtQtdeMensalidade.setEnabled(false);
         txtTaxaJuros.setEnabled(false);
         txtDtVencimento.setEnabled(false);
+
+        txtDataMatricula.requestFocus();
 
         btnConsultar.setEnabled(true);
         btnInserir.setEnabled(false);
@@ -799,9 +836,13 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
 
         if (JOptionPane.showConfirmDialog(null, "Confirma Exclusão?") == 0) {
-            if (rbtAVista.isSelected()) {
+
+            aVista = daoAVista.consultar(matricula.getData(), matricula.getAluno().getCpf(), matricula.getTurma().getSiglaTurma());
+            aPrazo = daoAPrazo.consultar(matricula.getData(), matricula.getAluno().getCpf(), matricula.getTurma().getSiglaTurma());
+
+            if (aPrazo == null) {
                 daoAVista.excluir(aVista);
-            } else if (rbtAPrazo.isSelected()) {
+            } else if (aVista == null) {
                 daoAPrazo.excluir(aPrazo);
             }
             daoMatricula.excluir(matricula);
@@ -818,8 +859,8 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
             txtDtVencimento.setText("");
 
             cbxCurso.setEnabled(true);
-            cbxTurma.setEnabled(true);
-            txtCPFAluno.setEnabled(true);
+            //cbxTurma.setEnabled(true);
+            //txtCPFAluno.setEnabled(true);
             txtDataMatricula.setEnabled(false);
             txtAgencia.setEnabled(false);
             txtNCheque.setEnabled(false);
@@ -828,7 +869,7 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
             txtTaxaJuros.setEnabled(false);
             txtDtVencimento.setEnabled(false);
 
-            cbxCurso.requestFocus();
+            txtDataMatricula.requestFocus();
 
             btnConsultar.setEnabled(true);
             btnInserir.setEnabled(false);
@@ -912,7 +953,6 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
     private DaoTurma daoTurma = null;
     private DaoAluno daoAluno = null;
     private Aluno aluno = null;
-    private Pessoa pessoa = null;
     private Matricula matricula = null;
     private Turma turma = null;
     private AVista aVista = null;
