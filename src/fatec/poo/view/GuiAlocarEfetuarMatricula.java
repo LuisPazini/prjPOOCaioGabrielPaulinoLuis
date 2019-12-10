@@ -221,10 +221,20 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Eraser.png"))); // NOI18N
         btnExcluir.setText("Excluir");
         btnExcluir.setEnabled(false);
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Alterar.png"))); // NOI18N
         btnAlterar.setText("Alterar");
         btnAlterar.setEnabled(false);
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
+            }
+        });
 
         btnInserir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/add.png"))); // NOI18N
         btnInserir.setText("Inserir");
@@ -586,9 +596,6 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
                 aVista.setValor(0.00);
             }
 
-            //aVista.setAgencia(Integer.parseInt(txtAgencia.getText()));
-            //aVista.setNCheque(Integer.parseInt(txtNCheque.getText()));
-            //aVista.setValor(Double.parseDouble(lblValor.getText()));
             aVista.setCpf(cpfAluno);
             aVista.setDataMatricula(dataMatricula);
             aVista.setPreData(txtPreData.getText());
@@ -625,9 +632,6 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
                 aPrazo.setValor(0.00);
             }
 
-            //aPrazo.setQtdeMensalidade(Integer.parseInt(txtQtdeMensalidade.getText()));            
-            //aPrazo.setTaxaJuros(Double.parseDouble(txtTaxaJuros.getText()));
-            //aPrazo.setValor(Double.parseDouble(lblValor.getText()));
             aPrazo.setCpf(cpfAluno);
             aPrazo.setDataMatricula(dataMatricula);
             aPrazo.setDtVencimento(txtDtVencimento.getText());
@@ -650,8 +654,11 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
         txtTaxaJuros.setText("");
         txtDtVencimento.setText("");
 
-        txtDataMatricula.setEnabled(true);
-        txtCPFAluno.setEnabled(false);
+        cbxCurso.setEnabled(true);
+        cbxTurma.setEnabled(true);
+        txtCPFAluno.setEnabled(true);
+        txtDataMatricula.setEnabled(false);
+        cbxCurso.requestFocus();
         txtAgencia.setEnabled(false);
         txtNCheque.setEnabled(false);
         txtPreData.setEnabled(false);
@@ -671,6 +678,164 @@ public class GuiAlocarEfetuarMatricula extends javax.swing.JFrame {
             txtCPFAluno.setText("");
         }
     }//GEN-LAST:event_cbxTurmaFocusLost
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+
+        if (JOptionPane.showConfirmDialog(null, "Confirma Alteração?") == 0) {
+
+            String dataMatricula = txtDataMatricula.getText();
+            String cpfAluno = txtCPFAluno.getText();
+            String siglaTurma = (String) cbxTurma.getSelectedItem();
+
+            matricula = daoMatricula.consultar(cpfAluno, siglaTurma);
+
+            if (rbtAVista.isSelected()) {
+                aVista = daoAVista.consultar(dataMatricula, cpfAluno, siglaTurma);
+
+                /*Tratamento de erros de Conversao de String vazia*/
+                try {
+                    if (txtAgencia.getText() != null) {
+                        aVista.setAgencia(Integer.parseInt(txtAgencia.getText()));
+                    }
+                } catch (NumberFormatException e) {
+                    aVista.setAgencia(0);
+                }
+
+                try {
+                    if (txtNCheque.getText() != null) {
+                        aVista.setNCheque(Integer.parseInt(txtNCheque.getText()));
+                    }
+                } catch (NumberFormatException e) {
+                    aVista.setNCheque(0);
+                }
+
+                try {
+                    if (lblValor.getText() != null) {
+                        aVista.setValor(Double.parseDouble(lblValor.getText()));
+                    }
+                } catch (NumberFormatException e) {
+                    aVista.setValor(0.00);
+                }
+
+                aVista.setCpf(cpfAluno);
+                aVista.setDataMatricula(dataMatricula);
+                aVista.setPreData(txtPreData.getText());
+                aVista.setSiglaTurma(siglaTurma);
+                matricula.setaVista(aVista);
+
+                daoAVista.alterar(aVista);
+
+            } else if (rbtAPrazo.isSelected()) {
+                aPrazo = daoAPrazo.consultar(dataMatricula, cpfAluno, siglaTurma);
+
+                /*Tratamento de erros de Conversao de String vazia*/
+                try {
+                    if (txtQtdeMensalidade.getText() != null) {
+                        aPrazo.setQtdeMensalidade(Integer.parseInt(txtQtdeMensalidade.getText()));
+                    }
+                } catch (NumberFormatException e) {
+                    aPrazo.setQtdeMensalidade(0);
+                }
+
+                try {
+                    if (txtTaxaJuros.getText() != null) {
+                        aPrazo.setTaxaJuros(Double.parseDouble(txtTaxaJuros.getText()));
+                    }
+                } catch (NumberFormatException e) {
+                    aPrazo.setTaxaJuros(0.00);
+                }
+
+                try {
+                    if (lblValor.getText() != null) {
+                        aPrazo.setValor(Double.parseDouble(lblValor.getText()));
+                    }
+                } catch (NumberFormatException e) {
+                    aPrazo.setValor(0.00);
+                }
+
+                aPrazo.setCpf(cpfAluno);
+                aPrazo.setDataMatricula(dataMatricula);
+                aPrazo.setDtVencimento(txtDtVencimento.getText());
+                aPrazo.setSiglaTurma(siglaTurma);
+                matricula.setaPrazo(aPrazo);
+
+                daoAPrazo.alterar(aPrazo);
+            }
+            daoMatricula.alterar(matricula);
+
+        }
+
+        //
+        txtDataMatricula.setText("");
+        cbxCurso.setSelectedIndex(-1);
+        cbxTurma.setSelectedIndex(-1);
+        txtCPFAluno.setText("");
+        txtAgencia.setText("");
+        txtNCheque.setText("");
+        txtPreData.setText("");
+        txtQtdeMensalidade.setText("");
+        txtTaxaJuros.setText("");
+        txtDtVencimento.setText("");
+
+        cbxCurso.setEnabled(true);
+        cbxTurma.setEnabled(true);
+        txtCPFAluno.setEnabled(true);
+        txtDataMatricula.setEnabled(false);
+        cbxCurso.requestFocus();
+        txtAgencia.setEnabled(false);
+        txtNCheque.setEnabled(false);
+        txtPreData.setEnabled(false);
+        txtQtdeMensalidade.setEnabled(false);
+        txtTaxaJuros.setEnabled(false);
+        txtDtVencimento.setEnabled(false);
+
+        btnConsultar.setEnabled(true);
+        btnInserir.setEnabled(false);
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+
+    }//GEN-LAST:event_btnAlterarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+
+        if (JOptionPane.showConfirmDialog(null, "Confirma Exclusão?") == 0) {
+            if (rbtAVista.isSelected()) {
+                daoAVista.excluir(aVista);
+            } else if (rbtAPrazo.isSelected()) {
+                daoAPrazo.excluir(aPrazo);
+            }
+            daoMatricula.excluir(matricula);
+
+            txtDataMatricula.setText("");
+            cbxCurso.setSelectedIndex(-1);
+            cbxTurma.setSelectedIndex(-1);
+            txtCPFAluno.setText("");
+            txtAgencia.setText("");
+            txtNCheque.setText("");
+            txtPreData.setText("");
+            txtQtdeMensalidade.setText("");
+            txtTaxaJuros.setText("");
+            txtDtVencimento.setText("");
+
+            cbxCurso.setEnabled(true);
+            cbxTurma.setEnabled(true);
+            txtCPFAluno.setEnabled(true);
+            txtDataMatricula.setEnabled(false);
+            txtAgencia.setEnabled(false);
+            txtNCheque.setEnabled(false);
+            txtPreData.setEnabled(false);
+            txtQtdeMensalidade.setEnabled(false);
+            txtTaxaJuros.setEnabled(false);
+            txtDtVencimento.setEnabled(false);
+
+            cbxCurso.requestFocus();
+
+            btnConsultar.setEnabled(true);
+            btnInserir.setEnabled(false);
+            btnAlterar.setEnabled(false);
+            btnExcluir.setEnabled(false);
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
 
     /**
      * @param args the command line arguments
